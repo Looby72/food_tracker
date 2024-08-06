@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_tracker/src/barcode_scan/barcode_input_view.dart';
 import 'package:food_tracker/src/settings/settings_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,8 +16,8 @@ class HomeViewState extends State<HomeView> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const Text('Welcome to the Home Screen!'),
-    const Text('Ernährung Screen'),
-    const Text('Another Screen'),
+    const BarcodeInputWidget(),
+    const Text('Weight Screen'),
   ];
 
   void _onItemTapped(int index) {
@@ -59,7 +60,6 @@ class HomeViewState extends State<HomeView> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
     );
