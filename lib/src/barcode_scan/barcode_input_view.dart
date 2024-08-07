@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'product_item.dart';
-import 'product_service.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 
 class BarcodeInputWidget extends StatefulWidget {
   const BarcodeInputWidget({super.key});
@@ -13,12 +11,22 @@ class BarcodeInputWidget extends StatefulWidget {
 class BarcodeInputWidgetState extends State<BarcodeInputWidget> {
   final _formKey = GlobalKey<FormState>();
   final _barcodeController = TextEditingController();
-  Future<Product>? _futureProduct;
+  Future<ProductResultV3>? _futureProduct;
 
+  //callback function to submit barcode for pressing the submit button
+  //checks if the form is valid
+  //fetches the product data from the API and stores it as Future<Product>
+  //if future is resolved, the future builder will display the product data
   Future<void> _submitBarcode() async {
     if (_formKey.currentState!.validate()) {
+      final ProductQueryConfiguration configuration = ProductQueryConfiguration(
+        _barcodeController.text,
+        language: OpenFoodFactsLanguage.GERMAN,
+        fields: [ProductField.ALL],
+        version: ProductQueryVersion.v3,
+      );
       setState(() {
-        _futureProduct = ProductService().fetchProduct(_barcodeController.text);
+        _futureProduct = OpenFoodAPIClient.getProductV3(configuration);
       });
     }
   }
@@ -58,21 +66,26 @@ class BarcodeInputWidgetState extends State<BarcodeInputWidget> {
               Expanded(
                 child: SingleChildScrollView(
                   child: (_futureProduct == null)
-                      ? null
-                      : FutureBuilder<Product>(
+                      ? const Text('Nothing to see yet')
+                      : FutureBuilder<ProductResultV3>(
                           future: _futureProduct,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              final product = snapshot.data!;
+                              final product = snapshot.data!.product!;
                               return Column(
                                 children: <Widget>[
-                                  Image.network(product.imageUrl),
-                                  Text('Name: ${product.name}'),
+                                  Image.network(
+                                      product.imageNutritionSmallUrl!),
+                                  Text('Name: ${product.productName}'),
                                   Text('Barcode: ${product.barcode}'),
-                                  Text('Calories: ${product.calories}'),
-                                  Text('Fat: ${product.fat}'),
-                                  Text('Carbs: ${product.carbs}'),
-                                  Text('Protein: ${product.protein}'),
+                                  Text(
+                                      'Calories: ${product.nutriments!.getComputedKJ(PerSize.oneHundredGrams)}'),
+                                  Text(
+                                      'Fat: ${product.nutriments!.getValue(Nutrient.fat, PerSize.oneHundredGrams)}'),
+                                  Text(
+                                      'Carbs: ${product.nutriments!.getValue(Nutrient.carbohydrates, PerSize.oneHundredGrams)}'),
+                                  Text(
+                                      'Protein: ${product.nutriments!.getValue(Nutrient.proteins, PerSize.oneHundredGrams)}'),
                                 ],
                               );
                             } else if (snapshot.hasError) {
