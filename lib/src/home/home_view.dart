@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_tracker/src/barcode_scan/barcode_input_view.dart';
+import 'package:food_tracker/src/product_search/search_bar/search_bar_view.dart';
 import 'package:food_tracker/src/settings/settings_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,7 +16,7 @@ class HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
 
   final List<Widget> _widgetOptions = <Widget>[
-    const Text('Welcome to the Home Screen!'),
+    const SearchView(),
     const BarcodeInputWidget(),
     const Text('Weight Screen'),
   ];
