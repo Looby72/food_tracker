@@ -13,87 +13,6 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
-  /* final TextEditingController _searchController = TextEditingController();
-  Future<SearchResult>? _futureResult;
-
-  void _searchProducts(String query) {
-    setState(() {
-      _futureResult = OpenFoodAPIClient.searchProducts(
-        null,
-        ProductSearchQueryConfiguration(
-          parametersList: <Parameter>[
-            SearchTerms(terms: [query])
-          ],
-          version: ProductQueryVersion.v3,
-        ),
-      );
-    });
-  }
-
-  //builder function for displaying the product data
-  Widget _buildProductInfo(
-      BuildContext context, AsyncSnapshot<SearchResult> snapshot) {
-    if (snapshot.hasData) {
-      final products = snapshot.data!.products;
-      if (products == null || products.isEmpty) {
-        return const Text('No results found');
-      }
-      return ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return ListTile(
-            title: Text(product.productName ?? 'No name'),
-            subtitle: Text(product.brands ?? 'No brand'),
-            leading: product.imageFrontUrl != null
-                ? Image.network(product.imageFrontUrl!)
-                : null,
-          );
-        },
-      );
-    } else if (snapshot.hasError) {
-      return Text('Error: ${snapshot.error}');
-    }
-
-    return const CircularProgressIndicator();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
-            labelText: 'Search',
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                _searchProducts(_searchController.text);
-              },
-            ),
-          ),
-        ),
-        Expanded(
-          child: (_futureResult == null)
-              ? const Text('Nothing to see yet')
-              : FutureBuilder<SearchResult>(
-                  future: _futureResult,
-                  builder: (context, snapshot) {
-                    return _buildProductInfo(context, snapshot);
-                  },
-                ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  } */
-
   //string of current query if null there is no pending query
   String? _currentQuery;
   //most recent API Suggestions
@@ -108,9 +27,12 @@ class _SearchViewState extends State<SearchView> {
       null,
       ProductSearchQueryConfiguration(
         parametersList: <Parameter>[
-          SearchTerms(terms: [_currentQuery!])
+          SearchTerms(terms: [_currentQuery!]),
+          const PageNumber(page: 1),
+          const PageSize(size: 20),
         ],
         version: ProductQueryVersion.v3,
+        language: OpenFoodFactsLanguage.GERMAN,
       ),
     );
     //error Handling
@@ -137,23 +59,9 @@ class _SearchViewState extends State<SearchView> {
   Widget build(BuildContext context) {
     return SearchAnchor.bar(suggestionsBuilder:
         (BuildContext context, SearchController controller) async {
-      _currentQuery = controller.text;
-      //make API call
-      SearchResult response = await OpenFoodAPIClient.searchProducts(
-        null,
-        ProductSearchQueryConfiguration(
-          parametersList: <Parameter>[
-            SearchTerms(terms: [_currentQuery!])
-          ],
-          version: ProductQueryVersion.v3,
-        ),
-      );
-
-      if (response.products == null) {
-        return const <Widget>[];
-      }
-      List<Product> options = response.products!;
-      if (_currentQuery != controller.text) {
+      final List<Product> options =
+          (await _debouncedSearch(controller.text))?.toList() ?? <Product>[];
+      if (options.isEmpty) {
         return _lastOptions;
       }
 
