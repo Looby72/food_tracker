@@ -31,6 +31,38 @@ class BarcodeInputWidgetState extends State<BarcodeInputWidget> {
     }
   }
 
+  //builder function for displaying the product data
+  Widget _buildProductInfo(
+      BuildContext context, AsyncSnapshot<ProductResultV3> snapshot) {
+    if (snapshot.hasData) {
+      final result = snapshot.data!;
+      if (result.product == null) {
+        return const Text('Product not found');
+      } else {
+        final product = result.product!;
+        return Column(
+          children: <Widget>[
+            Image.network(product.imageNutritionSmallUrl!),
+            Text('Name: ${product.productName}'),
+            Text('Barcode: ${product.barcode}'),
+            Text(
+                'Calories: ${product.nutriments!.getComputedKJ(PerSize.oneHundredGrams)}'),
+            Text(
+                'Fat: ${product.nutriments!.getValue(Nutrient.fat, PerSize.oneHundredGrams)}'),
+            Text(
+                'Carbs: ${product.nutriments!.getValue(Nutrient.carbohydrates, PerSize.oneHundredGrams)}'),
+            Text(
+                'Protein: ${product.nutriments!.getValue(Nutrient.proteins, PerSize.oneHundredGrams)}'),
+          ],
+        );
+      }
+    } else if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    }
+
+    return const CircularProgressIndicator();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,29 +102,7 @@ class BarcodeInputWidgetState extends State<BarcodeInputWidget> {
                       : FutureBuilder<ProductResultV3>(
                           future: _futureProduct,
                           builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              final product = snapshot.data!.product!;
-                              return Column(
-                                children: <Widget>[
-                                  Image.network(
-                                      product.imageNutritionSmallUrl!),
-                                  Text('Name: ${product.productName}'),
-                                  Text('Barcode: ${product.barcode}'),
-                                  Text(
-                                      'Calories: ${product.nutriments!.getComputedKJ(PerSize.oneHundredGrams)}'),
-                                  Text(
-                                      'Fat: ${product.nutriments!.getValue(Nutrient.fat, PerSize.oneHundredGrams)}'),
-                                  Text(
-                                      'Carbs: ${product.nutriments!.getValue(Nutrient.carbohydrates, PerSize.oneHundredGrams)}'),
-                                  Text(
-                                      'Protein: ${product.nutriments!.getValue(Nutrient.proteins, PerSize.oneHundredGrams)}'),
-                                ],
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
-
-                            return const CircularProgressIndicator();
+                            return _buildProductInfo(context, snapshot);
                           },
                         ),
                 ),
