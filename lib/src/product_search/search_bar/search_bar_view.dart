@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:food_tracker/src/product_search/product_detail/product_detail_view.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 const Duration debounceDuration = Duration(milliseconds: 500);
@@ -57,29 +58,38 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
-    return SearchAnchor.bar(suggestionsBuilder:
-        (BuildContext context, SearchController controller) async {
-      final List<Product> options =
-          (await _debouncedSearch(controller.text))?.toList() ?? <Product>[];
-      if (options.isEmpty) {
-        return _lastOptions;
-      }
+    return SearchAnchor.bar(
+        barHintText: 'Produktsuche',
+        isFullScreen: false,
+        suggestionsBuilder:
+            (BuildContext context, SearchController controller) async {
+          final List<Product> options =
+              (await _debouncedSearch(controller.text))?.toList() ??
+                  <Product>[];
+          if (options.isEmpty) {
+            return _lastOptions;
+          }
 
-      _lastOptions = options.map((Product product) {
-        return ListTile(
-          title: Text(product.productName ?? 'No name'),
-          subtitle: Text(product.brands ?? 'No brand'),
-          leading: product.imageFrontUrl != null
-              ? Image.network(product.imageFrontUrl!)
-              : null,
-          onTap: () {
-            debugPrint('Selected product: ${product.productName}');
-          },
-        );
-      });
+          _lastOptions = options.map((Product product) {
+            return ListTile(
+              title: Text(product.productName ?? 'No name'),
+              subtitle: Text(product.brands ?? 'No brand'),
+              leading: product.imageFrontUrl != null
+                  ? Image.network(product.imageFrontUrl!)
+                  : null,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailView(product: product),
+                  ),
+                );
+              },
+            );
+          });
 
-      return _lastOptions;
-    });
+          return _lastOptions;
+        });
   }
 }
 

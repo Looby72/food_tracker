@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_tracker/src/barcode_scan/barcode_input_view.dart';
+import 'package:food_tracker/src/product_search/barcode_search/barcode_input_view.dart';
 import 'package:food_tracker/src/product_search/search_bar/search_bar_view.dart';
 import 'package:food_tracker/src/settings/settings_view.dart';
 
