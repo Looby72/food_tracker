@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_tracker/src/daily_products/daily_products_view.dart';
 import 'package:food_tracker/src/product_search/barcode_search/barcode_input_view.dart';
 import 'package:food_tracker/src/product_search/search_bar/search_bar_view.dart';
 import 'package:food_tracker/src/settings/settings_view.dart';
@@ -18,7 +19,8 @@ class HomeViewState extends State<HomeView> {
   final List<Widget> _widgetOptions = <Widget>[
     const SearchView(),
     const BarcodeInputWidget(),
-    const Text('Weight Screen'),
+    const DailyFood()
+    //const Text('Weight Screen'),
   ];
 
   void _onItemTapped(int index) {

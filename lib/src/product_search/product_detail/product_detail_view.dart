@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:food_tracker/src/daily_products/daily_products_list.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 class ProductDetailView extends StatelessWidget {
   final Product product;
-
-  const ProductDetailView({super.key, required this.product});
+  final DailyProductsList _productTodayList = DailyProductsList();
+  ProductDetailView({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Detail'),
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => _productTodayList.addProduct(product)),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
