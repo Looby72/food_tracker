@@ -17,9 +17,14 @@ class HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
 
   final List<Widget> _widgetOptions = <Widget>[
-    const SearchView(),
+    const Column(
+      children: [
+        SearchView(),
+        DailyFoodProgress(),
+      ],
+    ),
     const BarcodeInputWidget(),
-    const DailyFood()
+    const DailyFoodList()
     //const Text('Weight Screen'),
   ];
 
