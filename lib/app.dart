@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:food_tracker/src/home/home_view.dart';
 
-import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
+import 'controllers/settings_controller.dart';
+import 'ui/screens/home_screen.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -59,22 +58,7 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
-          // Define a function to handle named routes in order to support
-          // Flutter web url navigation and deep linking.
-          onGenerateRoute: (RouteSettings routeSettings) {
-            return MaterialPageRoute<void>(
-              settings: routeSettings,
-              builder: (BuildContext context) {
-                switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
-                  case HomeView.routeName:
-                  default:
-                    return const HomeView();
-                }
-              },
-            );
-          },
+          home: HomeScreen(settingsController: settingsController),
         );
       },
     );
