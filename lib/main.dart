@@ -11,8 +11,8 @@ void main() async {
   OpenFoodAPIConfiguration.globalLanguages = <OpenFoodFactsLanguage>[
     OpenFoodFactsLanguage.GERMAN
   ];
-
   OpenFoodAPIConfiguration.globalCountry = OpenFoodFactsCountry.GERMANY;
+
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsController(SettingsService());
@@ -24,5 +24,7 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
-  runApp(MyApp(settingsController: settingsController));
+  runApp(MyApp(
+    settingsController: settingsController,
+  ));
 }

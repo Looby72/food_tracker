@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
+import '../../controllers/daily_food_controller.dart';
+
 class ProductDetailScreen extends StatelessWidget {
+  const ProductDetailScreen(
+      {super.key, required this.dailyFoodController, required this.product});
+
   final Product product;
-  const ProductDetailScreen({super.key, required this.product});
+  final DailyFoodController dailyFoodController;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +16,12 @@ class ProductDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Product Detail'),
         actions: [
-          IconButton(icon: const Icon(Icons.add), onPressed: () {}),
+          IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                dailyFoodController.addTodaysDailyFood(product);
+                Navigator.pop(context);
+              }),
         ],
       ),
       body: Padding(

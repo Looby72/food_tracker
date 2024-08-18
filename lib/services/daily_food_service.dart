@@ -31,6 +31,7 @@ class DailyFoodService {
   }
 
   // persistently safes the products to the shared preferences
+  // overrides the products list of the given date
   Future<void> saveProducts(List<Product> products, DateTime? date) async {
     // create a shared preferences instance
     final prefs = await SharedPreferencesWithCache.create(

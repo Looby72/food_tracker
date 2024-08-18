@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
-import '../screens/product_detail_screen.dart';
+import '../../data/routes.dart';
 
 const Duration debounceDuration = Duration(milliseconds: 500);
 
@@ -78,11 +78,10 @@ class _ProductSearchState extends State<ProductSearch> {
                   ? Image.network(product.imageFrontUrl!)
                   : null,
               onTap: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailScreen(product: product),
-                  ),
+                  Routes.productDetail,
+                  arguments: product,
                 );
               },
             );

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:food_tracker/controllers/daily_food_controller.dart';
-import 'package:food_tracker/services/daily_food_service.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 
 class DailyFoodProgress extends StatelessWidget {
-  const DailyFoodProgress({super.key});
+  const DailyFoodProgress({super.key, required this.dailyFoodController});
 
+  final DailyFoodController dailyFoodController;
   final calorieGoal = 2600;
   final carbGoal = 300;
   final fatGoal = 70;
@@ -15,7 +15,7 @@ class DailyFoodProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DailyFoodController(DailyFoodService()),
+      create: (context) => dailyFoodController,
       child: Card(
         child: Consumer<DailyFoodController>(
           builder: (context, controller, child) {

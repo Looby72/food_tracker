@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:food_tracker/controllers/settings_controller.dart';
-import 'package:food_tracker/ui/screens/settings_screen.dart';
+import 'package:food_tracker/controllers/daily_food_controller.dart';
 import 'package:food_tracker/ui/widgets/search_bar_widget.dart';
 
+import '../../data/routes.dart';
 import '../widgets/daily_progress_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.settingsController});
+  const HomeScreen({super.key, required this.dailyFoodController});
 
-  final SettingsController settingsController;
+  final DailyFoodController dailyFoodController;
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +20,17 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return SettingsScreen(controller: settingsController);
-              }));
+              Navigator.pushNamed(context, Routes.settings);
             },
           ),
         ],
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            ProductSearch(),
-            //DailyFoodProgress(),
+            const ProductSearch(),
+            DailyFoodProgress(dailyFoodController: dailyFoodController),
           ],
         ),
       ),

@@ -12,34 +12,37 @@ class DailyFoodController with ChangeNotifier {
 
   final DailyFoodService _dailyFoodService;
 
-  // The list of products that were eaten on a specific day
-  final Map<String, List<Product>> _dailyFood = {};
-
   // The list of products that were eaten today
-  List<Product> get todaysFoodList => _dailyFood[_getDateKey(null)] ?? [];
+  final List<Product> _todaysFoodList = [];
 
-  // Generates a key for the daily food map out of a DateTime object
-  String _getDateKey(DateTime? date) {
-    // get the current date if date parameter is null
+  // getter for todays food list
+  List<Product> get todaysFoodList => _todaysFoodList;
+
+  // Checks if a date is the current day
+  bool _isToday(DateTime? date) {
     date = date ?? DateTime.now();
-
-    return date.toIso8601String().split('T').first;
+    final now = DateTime.now();
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
   }
 
-  // Updates the daily food Map on a specific day (sync with the shared preferences)
-  // If no date is provided, the current date is used
-  Future<void> loadDailyFood(DateTime? date) async {
-    final List<Product> foodList = [];
-    foodList.addAll(await _dailyFoodService.getProducts(date));
-    _dailyFood[_getDateKey(date)] = foodList;
+  // Retrun the daily food list for a given date
+  Future<List<Product>> getDailyFood(DateTime? date) async {
+    if (_isToday(date)) {
+      loadTodaysDailyFood();
+      return _todaysFoodList;
+    } else {
+      final List<Product> foodList = [];
+      foodList.addAll(await _dailyFoodService.getProducts(date));
+      return foodList;
+    }
   }
 
-  // Updates the daily food Map on the current day (sync with the shared preferences)
-  // notify all listening widgets
+  // Loads the daily food list for the current day
   Future<void> loadTodaysDailyFood() async {
-    final date = DateTime.now();
-    final List<Product> foodList = [];
-    foodList.addAll(await _dailyFoodService.getProducts(date));
+    _todaysFoodList.clear();
+    _todaysFoodList.addAll(await _dailyFoodService.getProducts(DateTime.now()));
     notifyListeners();
   }
 
@@ -47,10 +50,8 @@ class DailyFoodController with ChangeNotifier {
   // notify all listening widgets
   Future<void> addTodaysDailyFood(Product product) async {
     final date = DateTime.now();
-    final List<Product> todaysFoodList = _dailyFood[_getDateKey(date)] ?? [];
-    todaysFoodList.add(product);
-    await _dailyFoodService.saveProducts(todaysFoodList, date);
-    _dailyFood[_getDateKey(date)] = todaysFoodList;
+    _todaysFoodList.add(product);
+    await _dailyFoodService.saveProducts(_todaysFoodList, date);
     notifyListeners();
   }
 
@@ -58,10 +59,8 @@ class DailyFoodController with ChangeNotifier {
   // notify all listening widgets
   Future<void> removeTodaysDailyFood(Product product) async {
     final date = DateTime.now();
-    final List<Product> todaysFoodList = _dailyFood[_getDateKey(date)] ?? [];
-    todaysFoodList.remove(product);
-    await _dailyFoodService.saveProducts(todaysFoodList, date);
-    _dailyFood[_getDateKey(date)] = todaysFoodList;
+    _todaysFoodList.remove(product);
+    await _dailyFoodService.saveProducts(_todaysFoodList, date);
     notifyListeners();
   }
 }

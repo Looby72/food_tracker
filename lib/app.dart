@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 
+import 'controllers/daily_food_controller.dart';
 import 'controllers/settings_controller.dart';
+import 'data/routes.dart';
+import 'services/daily_food_service.dart';
 import 'ui/screens/home_screen.dart';
+import 'ui/screens/product_detail_screen.dart';
+import 'ui/screens/settings_screen.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -13,9 +19,15 @@ class MyApp extends StatelessWidget {
   });
 
   final SettingsController settingsController;
+  final dailyFoodController = null;
 
   @override
   Widget build(BuildContext context) {
+    // Set up the DailyFoodController, which will glue daily food data to multiple
+    // Flutter Widgets.
+    final DailyFoodController dailyFoodController =
+        DailyFoodController(DailyFoodService());
+
     // Glue the SettingsController to the MaterialApp.
     //
     // The ListenableBuilder Widget listens to the SettingsController for changes.
@@ -58,7 +70,21 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
-          home: HomeScreen(settingsController: settingsController),
+          initialRoute: Routes.home,
+          routes: {
+            Routes.home: (context) => HomeScreen(
+                  dailyFoodController: dailyFoodController,
+                ),
+            Routes.settings: (context) => SettingsScreen(
+                  controller: settingsController,
+                ),
+            Routes.productDetail: (context) {
+              final product =
+                  ModalRoute.of(context)?.settings.arguments as Product?;
+              return ProductDetailScreen(
+                  dailyFoodController: dailyFoodController, product: product!);
+            },
+          },
         );
       },
     );
