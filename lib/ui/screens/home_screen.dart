@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_tracker/controllers/daily_food_controller.dart';
-import 'package:food_tracker/ui/widgets/search_bar_widget.dart';
 
+import '../../controllers/daily_food_controller.dart';
 import '../../data/routes.dart';
 import '../widgets/daily_progress_widget.dart';
+import '../widgets/search_bar_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key, required this.dailyFoodController});

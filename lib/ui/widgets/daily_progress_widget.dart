@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_tracker/controllers/daily_food_controller.dart';
-import 'package:openfoodfacts/openfoodfacts.dart';
-import 'package:provider/provider.dart';
+
+import '../../controllers/daily_food_controller.dart';
 
 class DailyFoodProgress extends StatelessWidget {
   const DailyFoodProgress({super.key, required this.dailyFoodController});
@@ -14,66 +13,38 @@ class DailyFoodProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => dailyFoodController,
-      child: Card(
-        child: Consumer<DailyFoodController>(
-          builder: (context, controller, child) {
-            final calories = controller.todaysFoodList.fold(
-              0.0,
-              (previousValue, element) =>
-                  previousValue +
-                  (element.nutriments?.getComputedKJ(PerSize.oneHundredGrams) ??
-                      0.0),
-            );
-            final carbs = controller.todaysFoodList.fold(
-              0.0,
-              (previousValue, element) =>
-                  previousValue +
-                  (element.nutriments?.getValue(
-                          Nutrient.carbohydrates, PerSize.oneHundredGrams) ??
-                      0.0),
-            );
-            final fat = controller.todaysFoodList.fold(
-              0.0,
-              (previousValue, element) =>
-                  previousValue +
-                  (element.nutriments
-                          ?.getValue(Nutrient.fat, PerSize.oneHundredGrams) ??
-                      0.0),
-            );
-            final protein = controller.todaysFoodList.fold(
-              0.0,
-              (previousValue, element) =>
-                  previousValue +
-                  (element.nutriments?.getValue(
-                          Nutrient.proteins, PerSize.oneHundredGrams) ??
-                      0.0),
-            );
+    return ListenableBuilder(
+      listenable: dailyFoodController,
+      builder: (BuildContext context, Widget? child) {
+        final kjs = dailyFoodController.cumulatedKj;
+        final carbs = dailyFoodController.cumulatedCarbs;
+        final fats = dailyFoodController.cumulatedFat;
+        final proteins = dailyFoodController.cumulatedProtein;
 
-            return Column(
-              children: [
-                ListTile(
-                  title: const Text('Kalorien'),
-                  subtitle: Text('$calories / $calorieGoal kJ'),
-                ),
-                ListTile(
-                  title: const Text('Kohlenhydrate'),
-                  subtitle: Text('$carbs / $carbGoal g'),
-                ),
-                ListTile(
-                  title: const Text('Fett'),
-                  subtitle: Text('$fat / $fatGoal g'),
-                ),
-                ListTile(
-                  title: const Text('Protein'),
-                  subtitle: Text('$protein / $proteinGoal g'),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
+        return Card(
+          child: Column(
+            children: [
+              ListTile(
+                title: const Text('Kalorien'),
+                subtitle: Text('${kjs.toStringAsFixed(2)} / $calorieGoal kJ'),
+              ),
+              ListTile(
+                title: const Text('Kohlenhydrate'),
+                subtitle: Text('${carbs.toStringAsFixed(2)} / $carbGoal g'),
+              ),
+              ListTile(
+                title: const Text('Fett'),
+                subtitle: Text('${fats.toStringAsFixed(2)} / $fatGoal g'),
+              ),
+              ListTile(
+                title: const Text('Protein'),
+                subtitle:
+                    Text('${proteins.toStringAsFixed(2)} / $proteinGoal g'),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_tracker/services/daily_food_service.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
+
+import '../services/daily_food_service.dart';
 
 // A class where many Widgets can interact with to read the current daily products
 // and add/remove new products to the list of daily products
@@ -10,6 +11,7 @@ class DailyFoodController with ChangeNotifier {
     loadTodaysDailyFood();
   }
 
+  // The service that is used to store and retrieve the daily products
   final DailyFoodService _dailyFoodService;
 
   // The list of products that were eaten today
@@ -63,4 +65,42 @@ class DailyFoodController with ChangeNotifier {
     await _dailyFoodService.saveProducts(_todaysFoodList, date);
     notifyListeners();
   }
+
+  // returnes the cumulated kj of all products consumed today
+  double get cumulatedKj => _todaysFoodList.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue +
+            (element.nutriments?.getComputedKJ(PerSize.oneHundredGrams) ?? 0.0),
+      );
+
+  // returnes the cumulated carbohydrates of all products consumed today
+  double get cumulatedCarbs => _todaysFoodList.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue +
+            (element.nutriments?.getValue(
+                    Nutrient.carbohydrates, PerSize.oneHundredGrams) ??
+                0.0),
+      );
+
+  // returnes the cumulated fat of all products consumed today
+  double get cumulatedFat => _todaysFoodList.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue +
+            (element.nutriments
+                    ?.getValue(Nutrient.fat, PerSize.oneHundredGrams) ??
+                0.0),
+      );
+
+  // returnes the cumulated protein of all products consumed today
+  double get cumulatedProtein => _todaysFoodList.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue +
+            (element.nutriments
+                    ?.getValue(Nutrient.proteins, PerSize.oneHundredGrams) ??
+                0.0),
+      );
 }
