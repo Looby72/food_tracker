@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:openfoodfacts/openfoodfacts.dart';
+
+import '../data/food_item.dart';
 
 // A class to store and retrieve daily products from the Phones storage
 // (shared preferences).
@@ -9,7 +10,7 @@ class DailyFoodService {
   final _prefix = 'eaten_products_';
 
   // loads the products that were eaten on a day from the shared preferences
-  Future<List<Product>> getProducts(DateTime? date) async {
+  Future<List<FoodItem>> getProducts(DateTime? date) async {
     // create a shared preferences instance
     final prefs = await SharedPreferencesWithCache.create(
         cacheOptions: const SharedPreferencesWithCacheOptions());
@@ -26,13 +27,13 @@ class DailyFoodService {
 
     // convert the json strings to product objects
     return productJsonList
-        .map((productJson) => Product.fromJson(jsonDecode(productJson)))
+        .map((productJson) => FoodItem.fromJson(jsonDecode(productJson)))
         .toList();
   }
 
   // persistently safes the products to the shared preferences
   // overrides the products list of the given date
-  Future<void> saveProducts(List<Product> products, DateTime? date) async {
+  Future<void> saveProducts(List<FoodItem> products, DateTime? date) async {
     // create a shared preferences instance
     final prefs = await SharedPreferencesWithCache.create(
         cacheOptions: const SharedPreferencesWithCacheOptions());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 import '../../controllers/daily_food_controller.dart';
+import '../../data/food_item.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   const ProductDetailScreen(
@@ -12,6 +13,8 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController gramsController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Detail'),
@@ -19,7 +22,10 @@ class ProductDetailScreen extends StatelessWidget {
           IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                dailyFoodController.addTodaysDailyFood(product);
+                final double grams =
+                    double.tryParse(gramsController.text) ?? 0.0;
+                final food = FoodItem.fromProduct(product, grams);
+                dailyFoodController.addTodaysDailyFood(food);
                 Navigator.pop(context);
               }),
         ],
@@ -46,8 +52,16 @@ class ProductDetailScreen extends StatelessWidget {
                   )
                 : const SizedBox.shrink(),
             const SizedBox(height: 16),
+            const Text(
+              'Nutrients per  100g',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
             Text(
-              'Calories (kJ): ${product.nutriments?.getComputedKJ(PerSize.oneHundredGrams) ?? 'N/A'}',
+              'Energy (kJ): ${product.nutriments?.getComputedKJ(PerSize.oneHundredGrams) ?? 'N/A'}',
               style: const TextStyle(
                 fontSize: 16,
               ),
@@ -72,7 +86,24 @@ class ProductDetailScreen extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
               ),
-            )
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Enter grams:',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: gramsController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Grams',
+              ),
+            ),
           ],
         ),
       ),

@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Create a TextEditingController for each nutrient goal.
-    final TextEditingController calorieController =
+    final TextEditingController energyController =
         TextEditingController(text: nutrientController.calorieGoal.toString());
     final TextEditingController proteinController =
         TextEditingController(text: nutrientController.proteinGoal.toString());
@@ -60,9 +60,9 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: calorieController,
+              controller: energyController,
               decoration: const InputDecoration(
-                labelText: 'Daily Calorie Goal',
+                labelText: 'Daily Energy Goal',
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) => nutrientController

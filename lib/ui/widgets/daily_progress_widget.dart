@@ -21,10 +21,10 @@ class DailyFoodProgress extends StatelessWidget {
           nutrientController,
         ]),
         builder: (BuildContext context, Widget? child) {
-          final kjs = dailyFoodController.cumulatedKj;
-          final carbs = dailyFoodController.cumulatedCarbs;
-          final fats = dailyFoodController.cumulatedFat;
-          final proteins = dailyFoodController.cumulatedProtein;
+          final energy = dailyFoodController.summedEnergy;
+          final carbs = dailyFoodController.summedCarbs;
+          final fats = dailyFoodController.summedFat;
+          final proteins = dailyFoodController.summedProtein;
           final calorieGoal = nutrientController.calorieGoal;
           final carbGoal = nutrientController.carbGoal;
           final fatGoal = nutrientController.fatGoal;
@@ -33,8 +33,9 @@ class DailyFoodProgress extends StatelessWidget {
           return Column(
             children: [
               ListTile(
-                title: const Text('Kalorien'),
-                subtitle: Text('${kjs.toStringAsFixed(2)} / $calorieGoal kJ'),
+                title: const Text('Energie'),
+                subtitle:
+                    Text('${energy.toStringAsFixed(2)} / $calorieGoal kJ'),
               ),
               ListTile(
                 title: const Text('Kohlenhydrate'),
