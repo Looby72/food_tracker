@@ -5,6 +5,7 @@ import 'package:openfoodfacts/openfoodfacts.dart';
 
 import 'controllers/daily_food_controller.dart';
 import 'controllers/settings_controller.dart';
+import 'controllers/nutrient_goal_controller.dart';
 import 'data/routes.dart';
 import 'services/daily_food_service.dart';
 import 'ui/screens/home_screen.dart';
@@ -19,7 +20,6 @@ class MyApp extends StatelessWidget {
   });
 
   final SettingsController settingsController;
-  final dailyFoodController = null;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
     // Flutter Widgets.
     final DailyFoodController dailyFoodController =
         DailyFoodController(DailyFoodService());
+    final NutrientGoalController nutrientController = NutrientGoalController();
 
     // Glue the SettingsController to the MaterialApp.
     //
@@ -74,9 +75,11 @@ class MyApp extends StatelessWidget {
           routes: {
             Routes.home: (context) => HomeScreen(
                   dailyFoodController: dailyFoodController,
+                  nutrientController: nutrientController,
                 ),
             Routes.settings: (context) => SettingsScreen(
                   controller: settingsController,
+                  nutrientController: nutrientController,
                 ),
             Routes.productDetail: (context) {
               final product =

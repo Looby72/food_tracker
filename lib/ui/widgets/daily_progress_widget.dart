@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
 
 import '../../controllers/daily_food_controller.dart';
+import '../../controllers/nutrient_goal_controller.dart';
 
 class DailyFoodProgress extends StatelessWidget {
-  const DailyFoodProgress({super.key, required this.dailyFoodController});
+  const DailyFoodProgress(
+      {super.key,
+      required this.dailyFoodController,
+      required this.nutrientController});
 
   final DailyFoodController dailyFoodController;
-  final calorieGoal = 2600;
-  final carbGoal = 300;
-  final fatGoal = 70;
-  final proteinGoal = 100;
+  final NutrientGoalController nutrientController;
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: dailyFoodController,
-      builder: (BuildContext context, Widget? child) {
-        final kjs = dailyFoodController.cumulatedKj;
-        final carbs = dailyFoodController.cumulatedCarbs;
-        final fats = dailyFoodController.cumulatedFat;
-        final proteins = dailyFoodController.cumulatedProtein;
+    return Card(
+      child: ListenableBuilder(
+        listenable: Listenable.merge([
+          dailyFoodController,
+          nutrientController,
+        ]),
+        builder: (BuildContext context, Widget? child) {
+          final kjs = dailyFoodController.cumulatedKj;
+          final carbs = dailyFoodController.cumulatedCarbs;
+          final fats = dailyFoodController.cumulatedFat;
+          final proteins = dailyFoodController.cumulatedProtein;
+          final calorieGoal = nutrientController.calorieGoal;
+          final carbGoal = nutrientController.carbGoal;
+          final fatGoal = nutrientController.fatGoal;
+          final proteinGoal = nutrientController.proteinGoal;
 
-        return Card(
-          child: Column(
+          return Column(
             children: [
               ListTile(
                 title: const Text('Kalorien'),
@@ -42,9 +50,9 @@ class DailyFoodProgress extends StatelessWidget {
                     Text('${proteins.toStringAsFixed(2)} / $proteinGoal g'),
               ),
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
