@@ -13,7 +13,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController gramsController = TextEditingController();
+    final TextEditingController weightController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +23,7 @@ class ProductDetailScreen extends StatelessWidget {
               icon: const Icon(Icons.add),
               onPressed: () {
                 final double grams =
-                    double.tryParse(gramsController.text) ?? 0.0;
+                    double.tryParse(weightController.text) ?? 0.0;
                 final food = FoodItem.fromProduct(product, grams);
                 dailyFoodController.addTodaysDailyFood(food);
                 Navigator.pop(context);
@@ -89,7 +89,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Enter grams:',
+              'Enter weight (g):',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -97,11 +97,11 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             TextField(
-              controller: gramsController,
+              controller: weightController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Grams',
+                labelText: 'weight',
               ),
             ),
           ],
