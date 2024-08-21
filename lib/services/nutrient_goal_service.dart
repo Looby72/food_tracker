@@ -29,8 +29,8 @@ class NutrientGoalService {
   Future<Map<String, int>> loadNutrientGoals() async {
     final prefs = await SharedPreferences.getInstance();
     return {
-      energyGoalKey: prefs.getInt(energyGoalKey) ?? 2600,
-      proteinGoalKey: prefs.getInt(proteinGoalKey) ?? 100,
+      energyGoalKey: prefs.getInt(energyGoalKey) ?? 11000,
+      proteinGoalKey: prefs.getInt(proteinGoalKey) ?? 140,
       fatGoalKey: prefs.getInt(fatGoalKey) ?? 70,
       carbGoalKey: prefs.getInt(carbGoalKey) ?? 300,
     };

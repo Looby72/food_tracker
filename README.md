@@ -2,6 +2,13 @@
 
 A minimalistic mobile App for tracking your daily eating behaviour.
 
+Todo:
+
+- bugfixes and code refactorings
+- create a respectable UI
+- add possibility to provide recipes
+- create theme based on android colors
+
 ## Getting Started
 
 This project is a starting point for a Flutter application that follows the
