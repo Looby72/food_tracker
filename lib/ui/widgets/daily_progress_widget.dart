@@ -25,7 +25,7 @@ class DailyFoodProgress extends StatelessWidget {
           final carbs = dailyFoodController.summedCarbs;
           final fats = dailyFoodController.summedFat;
           final proteins = dailyFoodController.summedProtein;
-          final calorieGoal = nutrientController.calorieGoal;
+          final energyGoal = nutrientController.energyGoal;
           final carbGoal = nutrientController.carbGoal;
           final fatGoal = nutrientController.fatGoal;
           final proteinGoal = nutrientController.proteinGoal;
@@ -34,8 +34,7 @@ class DailyFoodProgress extends StatelessWidget {
             children: [
               ListTile(
                 title: const Text('Energie'),
-                subtitle:
-                    Text('${energy.toStringAsFixed(2)} / $calorieGoal kJ'),
+                subtitle: Text('${energy.toStringAsFixed(2)} / $energyGoal kJ'),
               ),
               ListTile(
                 title: const Text('Kohlenhydrate'),

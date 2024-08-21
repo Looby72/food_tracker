@@ -1,14 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NutrientGoalService {
-  static const String calorieGoalKey = 'calorieGoal';
+  static const String energyGoalKey = 'energyGoal';
   static const String proteinGoalKey = 'proteinGoal';
   static const String fatGoalKey = 'fatGoal';
   static const String carbGoalKey = 'carbGoal';
 
-  Future<void> saveCalorieGoal(int calorieGoal) async {
+  Future<void> saveEnergyGoal(int energyGoal) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(calorieGoalKey, calorieGoal);
+    await prefs.setInt(energyGoalKey, energyGoal);
   }
 
   Future<void> saveProteinGoal(int proteinGoal) async {
@@ -29,7 +29,7 @@ class NutrientGoalService {
   Future<Map<String, int>> loadNutrientGoals() async {
     final prefs = await SharedPreferences.getInstance();
     return {
-      calorieGoalKey: prefs.getInt(calorieGoalKey) ?? 2600,
+      energyGoalKey: prefs.getInt(energyGoalKey) ?? 2600,
       proteinGoalKey: prefs.getInt(proteinGoalKey) ?? 100,
       fatGoalKey: prefs.getInt(fatGoalKey) ?? 70,
       carbGoalKey: prefs.getInt(carbGoalKey) ?? 300,
