@@ -7,7 +7,7 @@ import 'services/settings_service.dart';
 
 void main() async {
   // Set up OpenFoodFacts API configuration.
-  OpenFoodAPIConfiguration.userAgent = UserAgent(name: 'food_tracker');
+  OpenFoodAPIConfiguration.userAgent = UserAgent(name: 'food_tracker_app');
   OpenFoodAPIConfiguration.globalLanguages = <OpenFoodFactsLanguage>[
     OpenFoodFactsLanguage.GERMAN
   ];

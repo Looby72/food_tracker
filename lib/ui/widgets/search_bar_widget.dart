@@ -24,19 +24,33 @@ class _ProductSearchState extends State<ProductSearch> {
     _currentQuery = query;
 
     //make API call
-    SearchResult response = await OpenFoodAPIClient.searchProducts(
-      null,
-      ProductSearchQueryConfiguration(
-        parametersList: <Parameter>[
-          SearchTerms(terms: [_currentQuery!]),
-          const PageNumber(page: 1),
-          const PageSize(size: 20),
-        ],
-        version: ProductQueryVersion.v3,
-        language: OpenFoodFactsLanguage.GERMAN,
-      ),
-    );
-    //error Handling
+    SearchResult response;
+    try {
+      response = await OpenFoodAPIClient.searchProducts(
+        null,
+        ProductSearchQueryConfiguration(
+          parametersList: <Parameter>[
+            SearchTerms(terms: [_currentQuery!]),
+            const PageNumber(page: 1),
+            const PageSize(size: 20),
+          ],
+          fields: <ProductField>[
+            ProductField.BARCODE,
+            ProductField.NUTRIMENTS,
+            ProductField.NAME,
+            ProductField.BRANDS,
+            ProductField.IMAGE_FRONT_URL,
+            ProductField.SERVING_SIZE
+          ],
+          version: ProductQueryVersion.v3,
+          language: OpenFoodFactsLanguage.GERMAN,
+        ),
+      );
+    } catch (error) {
+      // Handle the timeout error here
+      return const <Product>[];
+    }
+    //no products are retrieved
     if (response.products == null) {
       return const <Product>[];
     }
