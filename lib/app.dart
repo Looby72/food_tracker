@@ -11,6 +11,7 @@ import 'services/daily_food_service.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/product_detail_screen.dart';
 import 'ui/screens/settings_screen.dart';
+import 'ui/screens/daily_food_screen.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -87,6 +88,9 @@ class MyApp extends StatelessWidget {
               return ProductDetailScreen(
                   dailyFoodController: dailyFoodController, product: product!);
             },
+            Routes.dailyFood: (context) => DailyFoodScreen(
+                  dailyFoodController: dailyFoodController,
+                ),
           },
         );
       },
