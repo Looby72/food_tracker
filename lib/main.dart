@@ -13,6 +13,9 @@ void main() async {
   ];
   OpenFoodAPIConfiguration.globalCountry = OpenFoodFactsCountry.GERMANY;
 
+  // ensure that SharedPreferences can be accessed
+  WidgetsFlutterBinding.ensureInitialized();
+  
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsController(SettingsService());
