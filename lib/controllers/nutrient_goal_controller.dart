@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../services/nutrient_goal_service.dart';
+import '../services/settings_service.dart';
 
 class NutrientGoalController with ChangeNotifier {
   late int _energyGoal;
@@ -8,7 +8,7 @@ class NutrientGoalController with ChangeNotifier {
   late int _fatGoal;
   late int _carbGoal;
 
-  final NutrientGoalService _service = NutrientGoalService();
+  final SettingsService _service = SettingsService();
 
   int get energyGoal => _energyGoal;
   int get proteinGoal => _proteinGoal;
@@ -22,10 +22,10 @@ class NutrientGoalController with ChangeNotifier {
   Future<void> loadNutrientGoals() async {
     // Load the nutrient goals from a service
     final goals = await _service.loadNutrientGoals();
-    _energyGoal = goals[NutrientGoalService.energyGoalKey]!;
-    _proteinGoal = goals[NutrientGoalService.proteinGoalKey]!;
-    _fatGoal = goals[NutrientGoalService.fatGoalKey]!;
-    _carbGoal = goals[NutrientGoalService.carbGoalKey]!;
+    _energyGoal = goals["energy"]!;
+    _proteinGoal = goals["proteins"]!;
+    _fatGoal = goals["fats"]!;
+    _carbGoal = goals["carbs"]!;
 
     notifyListeners();
   }
