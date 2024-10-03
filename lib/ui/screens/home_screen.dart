@@ -41,6 +41,12 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, Routes.addFood);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

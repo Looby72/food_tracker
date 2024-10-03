@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:food_tracker/ui/screens/add_food_screen.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 import 'controllers/daily_food_controller.dart';
@@ -91,6 +92,7 @@ class MyApp extends StatelessWidget {
             Routes.dailyFood: (context) => DailyFoodScreen(
                   dailyFoodController: dailyFoodController,
                 ),
+            Routes.addFood: (context) => const AddFoodScreen(),
           },
         );
       },
