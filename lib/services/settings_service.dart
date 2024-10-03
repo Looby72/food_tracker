@@ -18,7 +18,7 @@ class SettingsService {
   /// Example:
   /// ```dart
   /// await saveEnergyGoal(2000);
-  /// ``
+  /// ```
   Future<void> saveEnergyGoal(int energyGoal) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_energyGoalKey, energyGoal);
@@ -44,7 +44,7 @@ class SettingsService {
   /// Example:
   /// ```dart
   /// await saveFatGoal(70);
-  /// ``
+  /// ```
   Future<void> saveFatGoal(int fatGoal) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_fatGoalKey, fatGoal);

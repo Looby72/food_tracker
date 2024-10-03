@@ -13,6 +13,11 @@ class DailyFoodProgress extends StatelessWidget {
   final DailyFoodController dailyFoodController;
   final NutrientGoalController nutrientController;
 
+  /// Calculate the progress of a value compared to a goal.
+  double calculateProgress(double value, double goal) {
+    return (value / goal).clamp(0.0, 1.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -41,19 +46,60 @@ class DailyFoodProgress extends StatelessWidget {
                   title: const Text('Energie'),
                   subtitle:
                       Text('${energy.toStringAsFixed(2)} / $energyGoal kJ'),
+                  trailing: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        value: calculateProgress(energy, energyGoal.toDouble()),
+                      ),
+                      Text(
+                          '${(calculateProgress(energy, energyGoal.toDouble()) * 100).toStringAsFixed(0)}%'),
+                    ],
+                  ),
                 ),
                 ListTile(
                   title: const Text('Kohlenhydrate'),
                   subtitle: Text('${carbs.toStringAsFixed(2)} / $carbGoal g'),
+                  trailing: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        value: calculateProgress(carbs, carbGoal.toDouble()),
+                      ),
+                      Text(
+                          '${(calculateProgress(carbs, carbGoal.toDouble()) * 100).toStringAsFixed(0)}%'),
+                    ],
+                  ),
                 ),
                 ListTile(
                   title: const Text('Fett'),
                   subtitle: Text('${fats.toStringAsFixed(2)} / $fatGoal g'),
+                  trailing: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        value: calculateProgress(fats, fatGoal.toDouble()),
+                      ),
+                      Text(
+                          '${(calculateProgress(fats, fatGoal.toDouble()) * 100).toStringAsFixed(0)}%'),
+                    ],
+                  ),
                 ),
                 ListTile(
-                  title: const Text('Protein'),
+                  title: const Text('Proteine'),
                   subtitle:
                       Text('${proteins.toStringAsFixed(2)} / $proteinGoal g'),
+                  trailing: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        value:
+                            calculateProgress(proteins, proteinGoal.toDouble()),
+                      ),
+                      Text(
+                          '${(calculateProgress(proteins, proteinGoal.toDouble()) * 100).toStringAsFixed(0)}%'),
+                    ],
+                  ),
                 ),
               ],
             );
