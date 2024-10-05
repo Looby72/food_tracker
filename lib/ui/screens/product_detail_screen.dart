@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 import '../../controllers/daily_food_controller.dart';
-import '../../data/food_item.dart';
+import '../../data/internal_product.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   const ProductDetailScreen(
@@ -24,8 +24,10 @@ class ProductDetailScreen extends StatelessWidget {
               onPressed: () {
                 final double grams =
                     double.tryParse(weightController.text) ?? 0.0;
-                final food = FoodItem.fromProduct(product, grams);
-                dailyFoodController.addTodaysDailyFood(food);
+                final InternalProduct internalProduct =
+                    InternalProduct.fromProduct(product: product);
+                dailyFoodController.addProductToDailyFood(
+                    internalProduct, grams);
                 Navigator.pop(context);
               }),
         ],
