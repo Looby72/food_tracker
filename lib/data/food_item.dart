@@ -1,91 +1,130 @@
-import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:food_tracker/data/internal_product.dart';
+import 'package:uuid/uuid.dart';
 
-// A class to represent food
+/// A class to represent a Food item which can be added to the daily eaten food
 class FoodItem {
-  final String name;
-  final double carbs;
-  final double fats;
-  final double proteins;
-  final double energy;
-  final double grams;
+  final String _name;
+  final String _id;
+  double _totalCarbs;
+  double _totalFat;
+  double _totalProtein;
+  double _totalEnergy;
+  double _servings;
 
-  FoodItem({
-    required this.name,
-    required this.carbs,
-    required this.fats,
-    required this.proteins,
-    required this.energy,
-    required this.grams,
-  });
+  /// private constructor for FoodItem
+  FoodItem._({
+    required String name,
+    required String id,
+    required double totalCarbs,
+    required double totalFat,
+    required double totalProtein,
+    required double totalEnergy,
+    required double servings,
+  })  : _name = name,
+        _id = id,
+        _totalCarbs = totalCarbs,
+        _totalFat = totalFat,
+        _totalProtein = totalProtein,
+        _totalEnergy = totalEnergy,
+        _servings = servings;
 
-  // create a FoodItem from a [Product] object and the amount in grams
-  factory FoodItem.fromProduct(Product product, double grams) {
-    return FoodItem(
-      name: product.productName ?? 'Unknown',
-      carbs: (product.nutriments
-                  ?.getValue(Nutrient.carbohydrates, PerSize.oneHundredGrams) ??
-              0) /
-          100 *
-          grams,
-      fats: (product.nutriments
-                  ?.getValue(Nutrient.fat, PerSize.oneHundredGrams) ??
-              0) /
-          100 *
-          grams,
-      proteins: (product.nutriments
-                  ?.getValue(Nutrient.proteins, PerSize.oneHundredGrams) ??
-              0) /
-          100 *
-          grams,
-      energy:
-          (product.nutriments?.getComputedKJ(PerSize.oneHundredGrams) ?? 0) /
-              100 *
-              grams,
-      grams: grams,
-    );
-  }
+  /// create a FoodItem from a [InternalProduct] object and the amount in grams
+  FoodItem.fromProduct({
+    required InternalProduct product,
+    required double grams,
+  })  : _name = product.name,
+        _id = product.id,
+        _servings = grams,
+        _totalCarbs = (product.carbsPer100 / 100) * grams,
+        _totalFat = (product.fatPer100 / 100) * grams,
+        _totalProtein = (product.proteinPer100 / 100) * grams,
+        _totalEnergy = (product.energyPer100 / 100) * grams;
 
-  // create a FoodItem from antoher [FoodItem] object and the amount in grams
-  factory FoodItem.fromFoodItem(FoodItem foodItem, double grams) {
-    return FoodItem(
-      name: foodItem.name,
-      carbs: foodItem.carbs / foodItem.grams * grams,
-      fats: foodItem.fats / foodItem.grams * grams,
-      proteins: foodItem.proteins / foodItem.grams * grams,
-      energy: foodItem.energy / foodItem.grams * grams,
-      grams: grams,
-    );
-  }
+  /// create a FoodItem from a [Recipe] object and the amount in servings
+  FoodItem.fromRecipe({
+    required Recipe recipe,
+    required double servings,
+  })  : _name = recipe.name,
+        _id = recipe.id,
+        _servings = servings,
+        _totalCarbs = recipe.carbsPerServing * servings,
+        _totalFat = recipe.fatPerServing * servings,
+        _totalProtein = recipe.proteinPerServing * servings,
+        _totalEnergy = recipe.energyPerServing * servings;
 
-  // create a FoodItem from a JSON object
+  /// create a FoodItem from a JSON object
   factory FoodItem.fromJson(Map<String, dynamic> json) {
-    return FoodItem(
+    return FoodItem._(
       name: json['name'],
-      carbs: json['carbs'],
-      fats: json['fats'],
-      proteins: json['proteins'],
-      energy: json['energy'],
-      grams: json['grams'],
+      id: json['id'],
+      totalCarbs: json['carbs'],
+      totalFat: json['fats'],
+      totalProtein: json['proteins'],
+      totalEnergy: json['energy'],
+      servings: json['servings'],
     );
   }
 
-  // create a JSON object from a FoodItem
+  // Getters for private fields
+  String get name => _name;
+  String get id => _id;
+  double get totalCarbs => _totalCarbs;
+  double get totalFat => _totalFat;
+  double get totalProtein => _totalProtein;
+  double get totalEnergy => _totalEnergy;
+  double get grams => _servings;
+
+  /// Setter for _grams changes the amount of nutrients accordingly
+  set grams(double value) {
+    _totalCarbs = _totalCarbs / _servings * value;
+    _totalFat = _totalFat / _servings * value;
+    _totalProtein = _totalProtein / _servings * value;
+    _totalEnergy = _totalEnergy / _servings * value;
+    _servings = value;
+  }
+
+  /// create a JSON object from a FoodItem
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'carbs': carbs,
-      'fats': fats,
-      'proteins': proteins,
-      'energy': energy,
-      'grams': grams,
+      'name': _name,
+      'id': _id,
+      'carbs': _totalCarbs,
+      'fats': _totalFat,
+      'proteins': _totalProtein,
+      'energy': _totalEnergy,
+      'servings': _servings,
     };
   }
 }
 
+/// A class to represent a Recipe can be added as [FoodItem] to the daily eaten food
+/// just groups multiple [FoodItem] objects together
 class Recipe {
-  final List<FoodItem> ingredients;
+  static const Uuid _uuid = Uuid();
+
+  final String name;
+  final String id;
+  final List<FoodItem> _ingredients;
+  late double _carbsPerServing;
+  late double _fatPerServing;
+  late double _proteinPerServing;
+  late double _energyPerServing;
 
   Recipe({
-    required this.ingredients,
-  });
+    required this.name,
+    required List<FoodItem> ingredients,
+  })  : _ingredients = ingredients,
+        id = 'in_r_${_uuid.v4()}' {
+    for (var ingredient in _ingredients) {
+      _carbsPerServing += ingredient.totalCarbs;
+      _fatPerServing += ingredient.totalFat;
+      _proteinPerServing += ingredient.totalProtein;
+      _energyPerServing += ingredient.totalEnergy;
+    }
+  }
+
+  double get carbsPerServing => _carbsPerServing;
+  double get fatPerServing => _fatPerServing;
+  double get proteinPerServing => _proteinPerServing;
+  double get energyPerServing => _energyPerServing;
 }
