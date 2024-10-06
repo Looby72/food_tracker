@@ -44,4 +44,25 @@ class InternalProduct {
             0),
         energyPer100 =
             (product.nutriments?.getComputedKJ(PerSize.oneHundredGrams) ?? 0);
+
+  InternalProduct.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        id = json['id'],
+        proteinPer100 = json['protein'],
+        carbsPer100 = json['carbs'],
+        fatPer100 = json['fat'],
+        energyPer100 = json['energy'],
+        imageUrl = null,
+        brand = null;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'id': id,
+      'protein': proteinPer100,
+      'carbs': carbsPer100,
+      'fat': fatPer100,
+      'energy': energyPer100,
+    };
+  }
 }
