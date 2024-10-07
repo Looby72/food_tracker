@@ -7,13 +7,13 @@ import '../services/daily_food_service.dart';
 /// A class where many Widgets can interact with to read the current daily products
 /// and add/remove new products to the list of daily products
 class DailyFoodController with ChangeNotifier {
-  DailyFoodController(this._dailyFoodService) {
+  DailyFoodController() {
     // Load the daily products for the current day
     _loadTodaysDailyFood();
   }
 
   /// The service that is used to store and retrieve the daily products
-  final DailyFoodService _dailyFoodService;
+  final DailyFoodService _dailyFoodService = DailyFoodService();
 
   /// The list of food that was eaten today
   final List<FoodItem> _todaysFoodList = [];

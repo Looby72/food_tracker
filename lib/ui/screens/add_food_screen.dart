@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../controllers/product_storage_controller.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/stored_products_widget.dart';
 
 class AddFoodScreen extends StatelessWidget {
-  const AddFoodScreen({super.key, required this.productStorageController});
-
-  final ProductStorageController productStorageController;
+  const AddFoodScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +44,8 @@ class AddFoodScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: StoredProductsWidget(
-                    productStorageController: productStorageController,
-                  ),
+                const Expanded(
+                  child: StoredProductsWidget(),
                 ),
                 const ProductSearch(), // Assuming you have a SearchBarWidget defined somewhere
               ],

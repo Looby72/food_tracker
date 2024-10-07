@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/product_storage_controller.dart';
 
 class StoredProductsWidget extends StatelessWidget {
-  const StoredProductsWidget(
-      {super.key, required this.productStorageController});
-
-  final ProductStorageController productStorageController;
+  const StoredProductsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +13,8 @@ class StoredProductsWidget extends StatelessWidget {
         const Text('Deine Produkte',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         Expanded(
-          child: ListenableBuilder(
-            listenable: productStorageController,
-            builder: (context, child) {
+          child: Consumer<ProductStorageController>(
+            builder: (context, productStorageController, child) {
               final products = productStorageController.products;
 
               if (products.isEmpty) {

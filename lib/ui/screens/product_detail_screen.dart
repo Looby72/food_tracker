@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/daily_food_controller.dart';
 import '../../controllers/product_storage_controller.dart';
 import '../../data/internal_product.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen(
-      {super.key,
-      required this.dailyFoodController,
-      required this.productStorageController,
-      required this.product});
+  const ProductDetailScreen({super.key, required this.product});
 
   final Product product;
-  final DailyFoodController dailyFoodController;
-  final ProductStorageController productStorageController;
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +19,27 @@ class ProductDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Product Detail'),
         actions: [
-          IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                final double grams =
-                    double.tryParse(weightController.text) ?? 0.0;
-                final InternalProduct internalProduct =
-                    InternalProduct.fromProduct(product: product);
-                dailyFoodController.addProductToDailyFood(
-                    internalProduct, grams);
-                productStorageController.addProduct(internalProduct);
-                Navigator.pop(context);
-              }),
+          Consumer<DailyFoodController>(
+            builder: (context, dailyFoodController, child) {
+              return Consumer<ProductStorageController>(
+                builder: (context, productStorageController, child) {
+                  return IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      final double grams =
+                          double.tryParse(weightController.text) ?? 0.0;
+                      final InternalProduct internalProduct =
+                          InternalProduct.fromProduct(product: product);
+                      dailyFoodController.addProductToDailyFood(
+                          internalProduct, grams);
+                      productStorageController.addProduct(internalProduct);
+                      Navigator.pop(context);
+                    },
+                  );
+                },
+              );
+            },
+          ),
         ],
       ),
       body: Padding(

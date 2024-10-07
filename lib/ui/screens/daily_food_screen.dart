@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/daily_food_controller.dart';
 import '../../data/food_item.dart';
 
 class DailyFoodScreen extends StatelessWidget {
-  final DailyFoodController dailyFoodController;
-
-  const DailyFoodScreen({super.key, required this.dailyFoodController});
+  const DailyFoodScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +13,8 @@ class DailyFoodScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Daily Food'),
       ),
-      body: ListenableBuilder(
-        listenable: dailyFoodController,
-        builder: (BuildContext context, Widget? child) {
+      body: Consumer<DailyFoodController>(
+        builder: (context, dailyFoodController, child) {
           List<FoodItem> foodItems = dailyFoodController.todaysFoodList;
           return ListView.builder(
             itemCount: foodItems.length,
