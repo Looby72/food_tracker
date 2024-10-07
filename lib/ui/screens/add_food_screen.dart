@@ -11,49 +11,65 @@ class AddFoodScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Food'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return DefaultTabController(
+      length: 2,
+      initialIndex: 0,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Food'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Products'),
+              Tab(text: 'Recipes'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Column(
               children: [
-                Card(
-                  child: InkWell(
-                    onTap: () {
-                      // Handle create new product action
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text('Create new Product'),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Card(
+                        child: InkWell(
+                          onTap: () {
+                            // Handle create new product action
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text('Create new Product'),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Card(
-                  child: InkWell(
-                    onTap: () {
-                      // Handle create new recipe action
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text('Create new Recipe'),
-                    ),
+                Expanded(
+                  child: StoredProductsWidget(
+                    productStorageController: productStorageController,
                   ),
                 ),
+                const ProductSearch(), // Assuming you have a SearchBarWidget defined somewhere
               ],
             ),
-          ),
-          Expanded(
-            child: StoredProductsWidget(
-              productStorageController: productStorageController,
+            Center(
+              child: Card(
+                child: InkWell(
+                  onTap: () {
+                    // Handle create new recipe action
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text('Coming Soon'),
+                  ),
+                ),
+              ),
             ),
-          ),
-          const ProductSearch(), // Assuming you have a SearchBarWidget defined somewhere
-        ],
+          ],
+        ),
       ),
     );
   }

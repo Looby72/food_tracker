@@ -74,7 +74,7 @@ class _ProductSearchState extends State<ProductSearch> {
   Widget build(BuildContext context) {
     return SearchAnchor.bar(
         barHintText: 'Produktsuche',
-        isFullScreen: false,
+        isFullScreen: true,
         suggestionsBuilder:
             (BuildContext context, SearchController controller) async {
           final List<Product> options =
