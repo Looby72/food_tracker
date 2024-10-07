@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
+import '../../data/internal_product.dart';
 import '../../data/routes.dart';
 
 const Duration debounceDuration = Duration(milliseconds: 500);
@@ -74,7 +75,7 @@ class _ProductSearchState extends State<ProductSearch> {
   Widget build(BuildContext context) {
     return SearchAnchor.bar(
         barHintText: 'Produktsuche',
-        isFullScreen: false,
+        isFullScreen: true,
         suggestionsBuilder:
             (BuildContext context, SearchController controller) async {
           final List<Product> options =
@@ -92,10 +93,12 @@ class _ProductSearchState extends State<ProductSearch> {
                   ? Image.network(product.imageFrontUrl!)
                   : null,
               onTap: () {
+                final InternalProduct internalProduct =
+                    InternalProduct.fromProduct(product: product);
                 Navigator.pushNamed(
                   context,
                   Routes.productDetail,
-                  arguments: product,
+                  arguments: internalProduct,
                 );
               },
             );

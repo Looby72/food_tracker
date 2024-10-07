@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../controllers/daily_food_controller.dart';
-import '../../controllers/nutrient_goal_controller.dart';
 import '../../data/routes.dart';
 import '../widgets/daily_progress_widget.dart';
-import '../widgets/search_bar_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen(
-      {super.key,
-      required this.dailyFoodController,
-      required this.nutrientController});
-
-  final DailyFoodController dailyFoodController;
-  final NutrientGoalController nutrientController;
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +21,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const ProductSearch(),
-            DailyFoodProgress(
-                dailyFoodController: dailyFoodController,
-                nutrientController: nutrientController),
+            DailyFoodProgress(),
           ],
         ),
       ),

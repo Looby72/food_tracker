@@ -4,4 +4,5 @@ class Routes {
   static const String productDetail = '/productDetail';
   static const String dailyFood = '/dailyFood';
   static const String addFood = '/addFood';
+  static const String createProduct = '/createProduct';
 }

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../services/settings_service.dart';
 
 class NutrientGoalController with ChangeNotifier {
-  late int _energyGoal;
-  late int _proteinGoal;
-  late int _fatGoal;
-  late int _carbGoal;
-
   final SettingsService _service = SettingsService();
+
+  late int _energyGoal = 0;
+  late int _proteinGoal = 0;
+  late int _fatGoal = 0;
+  late int _carbGoal = 0;
 
   int get energyGoal => _energyGoal;
   int get proteinGoal => _proteinGoal;
