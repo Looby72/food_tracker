@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../controllers/product_storage_controller.dart';
 import '../../data/internal_product.dart';
 
 class CreateProductScreen extends StatefulWidget {
@@ -27,8 +29,11 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
         energyPer100: double.parse(_energyController.text),
       );
 
-      // Handle the created product (e.g., save it to a database or state management solution)
-      print('Product created: ${product.name}');
+      // Add the product to the product storage
+      Provider.of<ProductStorageController>(context, listen: false)
+          .addProduct(product);
+
+      Navigator.pop(context);
     }
   }
 
@@ -36,7 +41,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Product'),
+        title: const Text('Neues Produkt erstellen'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -46,62 +51,74 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
+                    return 'Produktname eingeben';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _carbsController,
-                decoration: InputDecoration(labelText: 'Carbs (per 100g)'),
+                decoration: const InputDecoration(
+                    labelText: 'Kohlenhydrate (g pro 100g)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter carbs';
+                  if (value == null ||
+                      value.isEmpty ||
+                      double.tryParse(value) == null) {
+                    return 'Bitte eine gültige Zahl eingeben';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _fatController,
-                decoration: InputDecoration(labelText: 'Fat (per 100g)'),
+                decoration:
+                    const InputDecoration(labelText: 'Fett (g pro 100g)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter fat';
+                  if (value == null ||
+                      value.isEmpty ||
+                      double.tryParse(value) == null) {
+                    return 'Bitte eine gültige Zahl eingeben';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _proteinsController,
-                decoration: InputDecoration(labelText: 'Proteins (per 100g)'),
+                decoration:
+                    const InputDecoration(labelText: 'Proteine (g pro 100g)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter proteins';
+                  if (value == null ||
+                      value.isEmpty ||
+                      double.tryParse(value) == null) {
+                    return 'Bitte eine gültige Zahl eingeben';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _energyController,
-                decoration: InputDecoration(labelText: 'Energy (per 100g)'),
+                decoration:
+                    const InputDecoration(labelText: 'Energie (kJ pro 100g)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter energy';
+                  if (value == null ||
+                      value.isEmpty ||
+                      double.tryParse(value) == null) {
+                    return 'Bitte eine gültige Zahl eingeben';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _createProduct,
-                child: Text('Create Product'),
+                child: const Text('Produkt erstellen'),
               ),
             ],
           ),

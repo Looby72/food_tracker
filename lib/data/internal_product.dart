@@ -27,7 +27,7 @@ class InternalProduct {
 
   /// Create the internal representation of a product from a [Product] object
   InternalProduct.fromProduct({required Product product})
-      : name = product.productName ?? 'Unknown',
+      : name = product.productName ?? 'UnknownName',
         id = product.barcode != null
             ? 'ex_p_${product.barcode}'
             : 'ex_p_${_uuid.v4()}',
@@ -52,8 +52,8 @@ class InternalProduct {
         carbsPer100 = json['carbs'],
         fatPer100 = json['fat'],
         energyPer100 = json['energy'],
-        imageUrl = null,
-        brand = null;
+        imageUrl = json['imageUrl'],
+        brand = json['brand'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -63,6 +63,8 @@ class InternalProduct {
       'carbs': carbsPer100,
       'fat': fatPer100,
       'energy': energyPer100,
+      'imageUrl': imageUrl,
+      'brand': brand,
     };
   }
 }

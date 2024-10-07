@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/daily_food_controller.dart';
@@ -9,7 +8,7 @@ import '../../data/internal_product.dart';
 class ProductDetailScreen extends StatelessWidget {
   const ProductDetailScreen({super.key, required this.product});
 
-  final Product product;
+  final InternalProduct product;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +27,8 @@ class ProductDetailScreen extends StatelessWidget {
                     onPressed: () {
                       final double grams =
                           double.tryParse(weightController.text) ?? 0.0;
-                      final InternalProduct internalProduct =
-                          InternalProduct.fromProduct(product: product);
-                      dailyFoodController.addProductToDailyFood(
-                          internalProduct, grams);
-                      productStorageController.addProduct(internalProduct);
+                      dailyFoodController.addProductToDailyFood(product, grams);
+                      productStorageController.addProduct(product);
                       Navigator.pop(context);
                     },
                   );
@@ -48,16 +44,16 @@ class ProductDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              product.productName ?? 'No product name available',
+              product.name,
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            product.imageFrontUrl != null
+            product.imageUrl != null
                 ? Image.network(
-                    product.imageFrontUrl!,
+                    product.imageUrl!,
                     width: 200,
                     height: 200,
                     fit: BoxFit.cover,
@@ -73,28 +69,28 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Energy (kJ): ${product.nutriments?.getComputedKJ(PerSize.oneHundredGrams) ?? 'N/A'}',
+              'Energy (kJ): ${product.energyPer100}',
               style: const TextStyle(
                 fontSize: 16,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Carbs: ${product.nutriments?.getValue(Nutrient.carbohydrates, PerSize.oneHundredGrams) ?? 'N/A'}',
+              'Carbs: ${product.carbsPer100}',
               style: const TextStyle(
                 fontSize: 16,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Fat: ${product.nutriments?.getValue(Nutrient.fat, PerSize.oneHundredGrams) ?? 'N/A'}',
+              'Fat: ${product.fatPer100}',
               style: const TextStyle(
                 fontSize: 16,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Proteins: ${product.nutriments?.getValue(Nutrient.proteins, PerSize.oneHundredGrams) ?? 'N/A'}',
+              'Proteins: ${product.proteinPer100}',
               style: const TextStyle(
                 fontSize: 16,
               ),

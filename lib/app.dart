@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:food_tracker/ui/screens/add_food_screen.dart';
-import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/daily_food_controller.dart';
 import 'controllers/product_storage_controller.dart';
 import 'controllers/settings_controller.dart';
 import 'controllers/nutrient_goal_controller.dart';
+import 'data/internal_product.dart';
 import 'data/routes.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/product_detail_screen.dart';
 import 'ui/screens/settings_screen.dart';
 import 'ui/screens/daily_food_screen.dart';
+import 'ui/screens/create_prodcut_screen.dart';
+import 'ui/screens/add_food_screen.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -76,12 +77,13 @@ class MyApp extends StatelessWidget {
               Routes.home: (context) => const HomeScreen(),
               Routes.settings: (context) => const SettingsScreen(),
               Routes.productDetail: (context) {
-                final product =
-                    ModalRoute.of(context)?.settings.arguments as Product?;
+                final product = ModalRoute.of(context)?.settings.arguments
+                    as InternalProduct?;
                 return ProductDetailScreen(product: product!);
               },
               Routes.dailyFood: (context) => const DailyFoodScreen(),
               Routes.addFood: (context) => const AddFoodScreen(),
+              Routes.createProduct: (context) => const CreateProductScreen(),
             },
           ),
         );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/routes.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/stored_products_widget.dart';
 
@@ -33,7 +34,7 @@ class AddFoodScreen extends StatelessWidget {
                       Card(
                         child: InkWell(
                           onTap: () {
-                            // Handle create new product action
+                            Navigator.pushNamed(context, Routes.createProduct);
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(16.0),

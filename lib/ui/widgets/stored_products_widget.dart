@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/product_storage_controller.dart';
+import '../../data/routes.dart';
 
 class StoredProductsWidget extends StatelessWidget {
   const StoredProductsWidget({super.key});
@@ -26,7 +27,12 @@ class StoredProductsWidget extends StatelessWidget {
                     final product = products[index];
                     return ListTile(
                       title: Text(product.name),
-                      subtitle: Text('Quantity: ${product.brand}'),
+                      subtitle: Text(product.brand ?? ''),
+                      onTap: () {
+                        // Navigate to the product detail screen
+                        Navigator.pushNamed(context, Routes.productDetail,
+                            arguments: product);
+                      },
                     );
                   },
                 );
