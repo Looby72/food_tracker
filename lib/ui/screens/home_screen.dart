@@ -4,7 +4,6 @@ import '../../controllers/daily_food_controller.dart';
 import '../../controllers/nutrient_goal_controller.dart';
 import '../../data/routes.dart';
 import '../widgets/daily_progress_widget.dart';
-import '../widgets/search_bar_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen(
@@ -34,7 +33,6 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const ProductSearch(),
             DailyFoodProgress(
                 dailyFoodController: dailyFoodController,
                 nutrientController: nutrientController),

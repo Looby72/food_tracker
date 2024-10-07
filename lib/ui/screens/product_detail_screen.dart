@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 import '../../controllers/daily_food_controller.dart';
+import '../../controllers/product_storage_controller.dart';
 import '../../data/internal_product.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   const ProductDetailScreen(
-      {super.key, required this.dailyFoodController, required this.product});
+      {super.key,
+      required this.dailyFoodController,
+      required this.productStorageController,
+      required this.product});
 
   final Product product;
   final DailyFoodController dailyFoodController;
+  final ProductStorageController productStorageController;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,7 @@ class ProductDetailScreen extends StatelessWidget {
                     InternalProduct.fromProduct(product: product);
                 dailyFoodController.addProductToDailyFood(
                     internalProduct, grams);
+                productStorageController.addProduct(internalProduct);
                 Navigator.pop(context);
               }),
         ],

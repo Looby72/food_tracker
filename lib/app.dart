@@ -5,6 +5,7 @@ import 'package:food_tracker/ui/screens/add_food_screen.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 import 'controllers/daily_food_controller.dart';
+import 'controllers/product_storage_controller.dart';
 import 'controllers/settings_controller.dart';
 import 'controllers/nutrient_goal_controller.dart';
 import 'data/routes.dart';
@@ -25,11 +26,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Set up the DailyFoodController, which will glue daily food data to multiple
-    // Flutter Widgets.
+    // Set up the controllers for the app.
     final DailyFoodController dailyFoodController =
         DailyFoodController(DailyFoodService());
     final NutrientGoalController nutrientController = NutrientGoalController();
+    final ProductStorageController productStorageController =
+        ProductStorageController();
 
     // Glue the SettingsController to the MaterialApp.
     //
@@ -87,12 +89,15 @@ class MyApp extends StatelessWidget {
               final product =
                   ModalRoute.of(context)?.settings.arguments as Product?;
               return ProductDetailScreen(
-                  dailyFoodController: dailyFoodController, product: product!);
+                  dailyFoodController: dailyFoodController,
+                  productStorageController: productStorageController,
+                  product: product!);
             },
             Routes.dailyFood: (context) => DailyFoodScreen(
                   dailyFoodController: dailyFoodController,
                 ),
-            Routes.addFood: (context) => const AddFoodScreen(),
+            Routes.addFood: (context) => AddFoodScreen(
+                productStorageController: productStorageController),
           },
         );
       },
