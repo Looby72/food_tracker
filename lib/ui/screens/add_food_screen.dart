@@ -26,6 +26,10 @@ class AddFoodScreen extends StatelessWidget {
           children: [
             Column(
               children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+                  child: ProductSearch(),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -48,7 +52,6 @@ class AddFoodScreen extends StatelessWidget {
                 const Expanded(
                   child: StoredProductsWidget(),
                 ),
-                const ProductSearch(), // Assuming you have a SearchBarWidget defined somewhere
               ],
             ),
             Center(

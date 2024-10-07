@@ -11,7 +11,7 @@ class StoredProductsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text('Deine Produkte',
+        const Text('Verlauf',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         Expanded(
           child: Consumer<ProductStorageController>(
