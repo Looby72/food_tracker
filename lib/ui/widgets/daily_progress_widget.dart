@@ -39,7 +39,7 @@ class DailyFoodProgress extends StatelessWidget {
                     ListTile(
                       title: const Text('Energie'),
                       subtitle:
-                          Text('${energy.toStringAsFixed(2)} / $energyGoal kJ'),
+                          Text('${energy.toStringAsFixed(2)} / $energyGoal kcal'),
                       trailing: Stack(
                         alignment: Alignment.center,
                         children: [

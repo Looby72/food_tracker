@@ -22,7 +22,7 @@ class DailyFoodScreen extends StatelessWidget {
               return ListTile(
                 title: Text(foodItems[index].name),
                 subtitle: Text(
-                    'Energy: ${foodItems[index].totalEnergy.toStringAsFixed(2)} kJ'),
+                    'Energy: ${foodItems[index].totalEnergy.toStringAsFixed(2)} kcal'),
                 trailing: IconButton(
                   icon: const Icon(Icons.remove),
                   onPressed: () {

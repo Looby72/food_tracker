@@ -43,7 +43,7 @@ class InternalProduct {
                 ?.getValue(Nutrient.fat, PerSize.oneHundredGrams) ??
             0),
         energyPer100 =
-            (product.nutriments?.getComputedKJ(PerSize.oneHundredGrams) ?? 0);
+            (product.nutriments?.getValue(Nutrient.energyKCal, PerSize.oneHundredGrams) ?? 0);
 
   InternalProduct.fromJson(Map<String, dynamic> json)
       : name = json['name'],

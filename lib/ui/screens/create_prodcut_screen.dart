@@ -104,7 +104,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
               TextFormField(
                 controller: _energyController,
                 decoration:
-                    const InputDecoration(labelText: 'Energie (kJ pro 100g)'),
+                    const InputDecoration(labelText: 'Energie (kcal pro 100g)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null ||

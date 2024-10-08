@@ -69,7 +69,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Energy (kJ): ${product.energyPer100}',
+              'Energy (kcal): ${product.energyPer100}',
               style: const TextStyle(
                 fontSize: 16,
               ),
