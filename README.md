@@ -13,6 +13,12 @@ Todo:
 
 - in VS code open Simulator or Android Emulator and press F5 (in a Dart File)
 
+## Building for production
+
+- Android:
+  - run `flutter clean`
+  - run `flutter build apk --split-per-abi`
+
 ## Changing the App Icons
 
 - change properties in flutter_launcher_icons.yaml (documentation [here](https://pub.dev/packages/flutter_launcher_icons))
