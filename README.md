@@ -9,6 +9,15 @@ Todo:
 - add possibility to provide recipes
 - create theme based on android colors
 
+## Debugging the App
+
+- in VS code open Simulator or Android Emulator and press F5 (in a Dart File)
+
+## Changing the App Icons
+
+- change properties in flutter_launcher_icons.yaml (documentation [here](https://pub.dev/packages/flutter_launcher_icons))
+- run `dart run flutter_launcher_icons`
+
 ## Getting Started
 
 This project is a starting point for a Flutter application that follows the
