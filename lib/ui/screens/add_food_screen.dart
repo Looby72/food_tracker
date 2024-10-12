@@ -46,6 +46,17 @@ class AddFoodScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      Card(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.barcodeScan);
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text('Scan a Barcode'),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
