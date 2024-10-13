@@ -2,6 +2,10 @@ import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../data/internal_product.dart';
+import '../../data/product_query.dart';
+import '../../data/routes.dart';
+
 class BarcodeScannerWidget extends StatefulWidget {
   const BarcodeScannerWidget({super.key});
 
@@ -10,7 +14,7 @@ class BarcodeScannerWidget extends StatefulWidget {
 }
 
 class _BarcodeScannerState extends State<BarcodeScannerWidget> {
-  ScanResult? scanResult;
+  String? scanResult;
   final ScanOptions options = const ScanOptions(
     strings: {
       'cancel': 'Abbrechen',
@@ -35,13 +39,13 @@ class _BarcodeScannerState extends State<BarcodeScannerWidget> {
 
     return Column(
       children: [
-        if (scanResult != null && scanResult.rawContent != '')
+        if (scanResult != null && scanResult != '')
           Card(
             child: Column(
               children: [
                 ListTile(
                   title: const Text('Result'),
-                  subtitle: Text(scanResult.rawContent),
+                  subtitle: Text(scanResult),
                 ),
               ],
             ),
@@ -57,14 +61,34 @@ class _BarcodeScannerState extends State<BarcodeScannerWidget> {
   Future<void> _scan() async {
     try {
       final result = await BarcodeScanner.scan(options: options);
-      setState(() => scanResult = result);
+
+      if (result.type == ResultType.Cancelled) {
+        setState(() {
+          scanResult = null;
+        });
+        return;
+      }
+      final product = await queryByBarcode(result.rawContent);
+
+      // check if the widget is still mounted
+      // we have to do this because the scan method is async and the widget
+      // could be disposed before the result is returned
+      if (!mounted) return;
+
+      if (product != null) {
+        final intProduct = InternalProduct.fromProduct(product: product);
+        Navigator.pushNamed(context, Routes.productDetail,
+            arguments: intProduct);
+      } else {
+        setState(() {
+          scanResult = 'You found a new product!';
+        });
+      }
     } on PlatformException catch (e) {
       setState(() {
-        scanResult = ScanResult(
-          rawContent: e.code == BarcodeScanner.cameraAccessDenied
-              ? 'The user did not grant the camera permission!'
-              : 'Unknown error: $e',
-        );
+        scanResult = e.code == BarcodeScanner.cameraAccessDenied
+            ? 'The user did not grant the camera permission!'
+            : 'Unknown error: $e';
       });
     }
   }

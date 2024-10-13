@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
 import '../../data/internal_product.dart';
+import '../../data/product_query.dart';
 import '../../data/routes.dart';
 
 const Duration debounceDuration = Duration(milliseconds: 500);
@@ -25,38 +26,9 @@ class _ProductSearchState extends State<ProductSearch> {
     _currentQuery = query;
 
     //make API call
-    SearchResult response;
-    try {
-      response = await OpenFoodAPIClient.searchProducts(
-        null,
-        ProductSearchQueryConfiguration(
-          parametersList: <Parameter>[
-            SearchTerms(terms: [_currentQuery!]),
-            const PageNumber(page: 1),
-            const PageSize(size: 20),
-          ],
-          fields: <ProductField>[
-            ProductField.BARCODE,
-            ProductField.NUTRIMENTS,
-            ProductField.NAME,
-            ProductField.BRANDS,
-            ProductField.IMAGE_FRONT_URL,
-            ProductField.SERVING_SIZE
-          ],
-          version: ProductQueryVersion.v3,
-          language: OpenFoodFactsLanguage.GERMAN,
-        ),
-      );
-    } catch (error) {
-      // Handle the timeout error here
-      return const <Product>[];
-    }
-    //no products are retrieved
-    if (response.products == null) {
-      return const <Product>[];
-    }
+    Iterable<Product> options = await queryByName(query);
 
-    List<Product> options = response.products!;
+    // if the query has changed by the time the API call has been resolved, discard the result
     if (_currentQuery != query) {
       return null;
     }
