@@ -39,21 +39,14 @@ class _BarcodeScannerState extends State<BarcodeScannerWidget> {
 
     return Column(
       children: [
-        if (scanResult != null && scanResult != '')
-          Card(
-            child: Column(
-              children: [
-                ListTile(
-                  title: const Text('Result'),
-                  subtitle: Text(scanResult),
-                ),
-              ],
-            ),
+        Card(
+          child: InkWell(
+            onTap: _scan,
+            child: const Padding(
+                padding: EdgeInsets.all(16.0), child: Text('Scan a Barcode')),
           ),
-        ElevatedButton(
-          onPressed: _scan,
-          child: const Text('Scan'),
         ),
+        if (scanResult != null && scanResult != '') Text(scanResult)
       ],
     );
   }
@@ -81,7 +74,7 @@ class _BarcodeScannerState extends State<BarcodeScannerWidget> {
             arguments: intProduct);
       } else {
         setState(() {
-          scanResult = 'You found a new product!';
+          scanResult = 'Product not found :(';
         });
       }
     } on PlatformException catch (e) {

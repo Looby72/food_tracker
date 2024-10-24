@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/routes.dart';
+import '../widgets/barcode_scanner_widget.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/stored_products_widget.dart';
 
@@ -34,6 +35,7 @@ class AddFoodScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Card(
                         child: InkWell(
@@ -46,17 +48,7 @@ class AddFoodScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Card(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.barcodeScan);
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text('Scan a Barcode'),
-                          ),
-                        ),
-                      ),
+                      const BarcodeScannerWidget(),
                     ],
                   ),
                 ),

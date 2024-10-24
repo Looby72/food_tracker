@@ -9,7 +9,6 @@ import 'controllers/settings_controller.dart';
 import 'controllers/nutrient_goal_controller.dart';
 import 'data/internal_product.dart';
 import 'data/routes.dart';
-import 'ui/screens/barcode_scan_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/product_detail_screen.dart';
 import 'ui/screens/settings_screen.dart';
@@ -85,7 +84,6 @@ class MyApp extends StatelessWidget {
               Routes.dailyFood: (context) => const DailyFoodScreen(),
               Routes.addFood: (context) => const AddFoodScreen(),
               Routes.createProduct: (context) => const CreateProductScreen(),
-              Routes.barcodeScan: (context) => const BarcodeScanScreen(),
             },
           ),
         );
