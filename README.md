@@ -16,6 +16,7 @@ Todo:
 ## Building for production
 
 - Android:
+  - change version number in android/app/build.gradle and pubspec.yaml
   - run `flutter clean`
   - run `flutter build apk --split-per-abi`
 
