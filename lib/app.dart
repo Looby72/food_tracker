@@ -29,17 +29,22 @@ class MyApp extends StatelessWidget {
       ColorScheme lightColorScheme;
       ColorScheme darkColorScheme;
 
-      if (lightDynamic != null && darkDynamic != null) {
-        lightColorScheme = lightDynamic.harmonized();
-        darkColorScheme = darkDynamic.harmonized();
+      if (lightDynamic != null && darkDynamic != null && false) {
+        lightColorScheme = lightDynamic;
+        darkColorScheme = darkDynamic;
       } else {
         lightColorScheme = DefaultTheme.lightScheme();
         darkColorScheme = DefaultTheme.darkScheme();
       }
-      ThemeData lightTheme =
-          ThemeData.from(colorScheme: lightColorScheme, useMaterial3: true);
-      ThemeData darkTheme =
-          ThemeData.from(colorScheme: darkColorScheme, useMaterial3: true);
+      TextTheme textTheme = createTextTheme(context, 'Roboto', 'Roboto');
+      ThemeData lightTheme = ThemeData.from(
+          colorScheme: lightColorScheme,
+          textTheme: textTheme,
+          useMaterial3: true);
+      ThemeData darkTheme = ThemeData.from(
+          colorScheme: darkColorScheme,
+          textTheme: textTheme,
+          useMaterial3: true);
 
       // Glue the SettingsController to the MaterialApp.
       //
