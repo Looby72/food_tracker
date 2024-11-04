@@ -32,6 +32,7 @@ class SettingsThemeWidget extends StatelessWidget {
                 settingsController.updateThemeMode(value);
               },
               dense: true,
+              contentPadding: EdgeInsets.zero,
             ),
             RadioListTile<ThemeMode>(
               title: Text('Dunkel',
@@ -43,6 +44,7 @@ class SettingsThemeWidget extends StatelessWidget {
                 settingsController.updateThemeMode(value);
               },
               dense: true,
+              contentPadding: EdgeInsets.zero,
             ),
             RadioListTile<ThemeMode>(
               title: Text('System',
@@ -54,6 +56,7 @@ class SettingsThemeWidget extends StatelessWidget {
                 settingsController.updateThemeMode(value);
               },
               dense: true,
+              contentPadding: EdgeInsets.zero,
             ),
           ],
         ),
