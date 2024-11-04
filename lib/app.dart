@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         lightColorScheme = DefaultTheme.lightScheme();
         darkColorScheme = DefaultTheme.darkScheme();
       }
-      TextTheme textTheme = createTextTheme(context, 'Roboto', 'Roboto');
+      TextTheme textTheme = createTextTheme(context, 'Roboto', 'Merriweather');
       ThemeData lightTheme = ThemeData.from(
           colorScheme: lightColorScheme,
           textTheme: textTheme,

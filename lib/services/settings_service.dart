@@ -83,10 +83,10 @@ class SettingsService {
   Future<Map<String, int>> loadNutrientGoals() async {
     final prefs = await SharedPreferences.getInstance();
     return {
-      "energy": prefs.getInt(_energyGoalKey) ?? 2500,
-      "proteins": prefs.getInt(_proteinGoalKey) ?? 140,
-      "fats": prefs.getInt(_fatGoalKey) ?? 70,
-      "carbs": prefs.getInt(_carbGoalKey) ?? 300,
+      'energy': prefs.getInt(_energyGoalKey) ?? 2500,
+      'proteins': prefs.getInt(_proteinGoalKey) ?? 140,
+      'fats': prefs.getInt(_fatGoalKey) ?? 70,
+      'carbs': prefs.getInt(_carbGoalKey) ?? 300,
     };
   }
 

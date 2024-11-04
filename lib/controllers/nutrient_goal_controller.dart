@@ -22,10 +22,10 @@ class NutrientGoalController with ChangeNotifier {
   Future<void> loadNutrientGoals() async {
     // Load the nutrient goals from a service
     final goals = await _service.loadNutrientGoals();
-    _energyGoal = goals["energy"]!;
-    _proteinGoal = goals["proteins"]!;
-    _fatGoal = goals["fats"]!;
-    _carbGoal = goals["carbs"]!;
+    _energyGoal = goals['energy']!;
+    _proteinGoal = goals['proteins']!;
+    _fatGoal = goals['fats']!;
+    _carbGoal = goals['carbs']!;
 
     notifyListeners();
   }

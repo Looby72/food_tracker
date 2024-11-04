@@ -25,7 +25,7 @@ class Screen extends StatelessWidget {
                 .textTheme
                 .headlineMedium
                 ?.copyWith(color: Theme.of(context).colorScheme.onSurface)),
-        centerTitle: true,
+        centerTitle: centerTitle,
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         actions: actions,
