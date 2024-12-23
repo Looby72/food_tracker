@@ -1,3 +1,4 @@
+#workflow originated from https://medium.com/@colonal/automating-flutter-builds-and-releases-with-github-actions-77ccf4a1ccdd
 name: "Build"
 
 on:
@@ -29,7 +30,7 @@ jobs:
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2'
+          flutter-version: '3.27.1'
           channel: 'stable'
 
         #4 Install Dependencies
