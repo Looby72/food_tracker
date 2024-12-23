@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/product_storage_controller.dart';
 import '../../data/internal_product.dart';
+import 'base_screen.dart';
 
 class CreateProductScreen extends StatefulWidget {
   const CreateProductScreen({super.key});
@@ -39,89 +40,94 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Neues Produkt erstellen'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Produktname eingeben';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _carbsController,
-                decoration: const InputDecoration(
-                    labelText: 'Kohlenhydrate (g pro 100g)'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      double.tryParse(value) == null) {
-                    return 'Bitte eine gültige Zahl eingeben';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _fatController,
-                decoration:
-                    const InputDecoration(labelText: 'Fett (g pro 100g)'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      double.tryParse(value) == null) {
-                    return 'Bitte eine gültige Zahl eingeben';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _proteinsController,
-                decoration:
-                    const InputDecoration(labelText: 'Proteine (g pro 100g)'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      double.tryParse(value) == null) {
-                    return 'Bitte eine gültige Zahl eingeben';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _energyController,
-                decoration:
-                    const InputDecoration(labelText: 'Energie (kcal pro 100g)'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      double.tryParse(value) == null) {
-                    return 'Bitte eine gültige Zahl eingeben';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _createProduct,
-                child: const Text('Produkt erstellen'),
-              ),
-            ],
-          ),
+    return Screen(
+      title: 'Neues Produkt',
+      centerTitle: false,
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            TextFormField(
+              controller: _nameController,
+              decoration: const InputDecoration(labelText: 'Name'),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Produktname eingeben';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _carbsController,
+              decoration: const InputDecoration(
+                  labelText: 'Kohlenhydrate (g pro 100g)'),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    double.tryParse(value) == null) {
+                  return 'Bitte eine gültige Zahl eingeben';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _fatController,
+              decoration: const InputDecoration(labelText: 'Fett (g pro 100g)'),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    double.tryParse(value) == null) {
+                  return 'Bitte eine gültige Zahl eingeben';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _proteinsController,
+              decoration:
+                  const InputDecoration(labelText: 'Proteine (g pro 100g)'),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    double.tryParse(value) == null) {
+                  return 'Bitte eine gültige Zahl eingeben';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _energyController,
+              decoration:
+                  const InputDecoration(labelText: 'Energie (kcal pro 100g)'),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    double.tryParse(value) == null) {
+                  return 'Bitte eine gültige Zahl eingeben';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _createProduct,
+              child: const Text('Produkt erstellen'),
+            ),
+          ],
         ),
       ),
     );

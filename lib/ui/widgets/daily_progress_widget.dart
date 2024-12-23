@@ -38,14 +38,14 @@ class DailyFoodProgress extends StatelessWidget {
                   children: [
                     ListTile(
                       title: const Text('Energie'),
-                      subtitle:
-                          Text('${energy.toStringAsFixed(2)} / $energyGoal kcal'),
+                      subtitle: Text(
+                          '${energy.toStringAsFixed(2)} / $energyGoal kcal'),
                       trailing: Stack(
                         alignment: Alignment.center,
                         children: [
                           CircularProgressIndicator(
-                            value:
-                                calculateProgress(energy, energyGoal.toDouble()),
+                            value: calculateProgress(
+                                energy, energyGoal.toDouble()),
                           ),
                           Text(
                               '${(calculateProgress(energy, energyGoal.toDouble()) * 100).toStringAsFixed(0)}%'),
@@ -54,12 +54,14 @@ class DailyFoodProgress extends StatelessWidget {
                     ),
                     ListTile(
                       title: const Text('Kohlenhydrate'),
-                      subtitle: Text('${carbs.toStringAsFixed(2)} / $carbGoal g'),
+                      subtitle:
+                          Text('${carbs.toStringAsFixed(2)} / $carbGoal g'),
                       trailing: Stack(
                         alignment: Alignment.center,
                         children: [
                           CircularProgressIndicator(
-                            value: calculateProgress(carbs, carbGoal.toDouble()),
+                            value:
+                                calculateProgress(carbs, carbGoal.toDouble()),
                           ),
                           Text(
                               '${(calculateProgress(carbs, carbGoal.toDouble()) * 100).toStringAsFixed(0)}%'),
@@ -82,8 +84,8 @@ class DailyFoodProgress extends StatelessWidget {
                     ),
                     ListTile(
                       title: const Text('Proteine'),
-                      subtitle:
-                          Text('${proteins.toStringAsFixed(2)} / $proteinGoal g'),
+                      subtitle: Text(
+                          '${proteins.toStringAsFixed(2)} / $proteinGoal g'),
                       trailing: Stack(
                         alignment: Alignment.center,
                         children: [

@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +10,7 @@ import 'controllers/settings_controller.dart';
 import 'controllers/nutrient_goal_controller.dart';
 import 'data/internal_product.dart';
 import 'data/routes.dart';
+import 'theme.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/product_detail_screen.dart';
 import 'ui/screens/settings_screen.dart';
@@ -16,18 +18,52 @@ import 'ui/screens/daily_food_screen.dart';
 import 'ui/screens/create_prodcut_screen.dart';
 import 'ui/screens/add_food_screen.dart';
 
-/// The Widget that configures your application.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // Workaround for the dynamic color scheme library
+  // (https://github.com/material-foundation/flutter-packages/issues/582#issuecomment-2081174158)
+  (ColorScheme light, ColorScheme dark) _generateDynamicColourSchemes(
+      ColorScheme lightDynamic, ColorScheme darkDynamic) {
+    var lightBase = ColorScheme.fromSeed(seedColor: lightDynamic.primary);
+    var darkBase = ColorScheme.fromSeed(
+        seedColor: darkDynamic.primary, brightness: Brightness.dark);
+
+    return (lightBase.harmonized(), darkBase.harmonized());
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The Consumer widget allows you to access the SettingsController and
-    // rebuilts the MaterialApp when notifyListeners is called.
-    return Consumer<SettingsController>(
-      builder: (context, settingsController, child) {
+    return DynamicColorBuilder(
+        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+      // Create a light and dark ColorScheme based on the DynamicColorScheme
+      ColorScheme lightColorScheme;
+      ColorScheme darkColorScheme;
+
+      // Temporarily disable dynamic Themes bc of bugs in the library
+      if (lightDynamic != null && darkDynamic != null) {
+        (lightColorScheme, darkColorScheme) =
+            _generateDynamicColourSchemes(lightDynamic, darkDynamic);
+      } else {
+        lightColorScheme = DefaultTheme.lightScheme();
+        darkColorScheme = DefaultTheme.darkScheme();
+      }
+      TextTheme textTheme = createTextTheme(context, 'Roboto', 'Merriweather');
+      ThemeData lightTheme = ThemeData.from(
+          colorScheme: lightColorScheme,
+          textTheme: textTheme,
+          useMaterial3: true);
+      ThemeData darkTheme = ThemeData.from(
+          colorScheme: darkColorScheme,
+          textTheme: textTheme,
+          useMaterial3: true);
+
+      // Glue the SettingsController to the MaterialApp.
+      //
+      // The Consumer widget allows you to access the SettingsController and
+      // rebuilts the MaterialApp when notifyListeners is called.
+      return Consumer<SettingsController>(
+          builder: (context, settingsController, child) {
         // Provide the other controllers that do not have to rebuild the MaterialApp
         return MultiProvider(
           providers: [
@@ -68,8 +104,8 @@ class MyApp extends StatelessWidget {
             // Define a light and dark color theme. Then, read the user's
             // preferred ThemeMode (light, dark, or system default) from the
             // SettingsController to display the correct theme.
-            theme: ThemeData(),
-            darkTheme: ThemeData.dark(),
+            theme: lightTheme,
+            darkTheme: darkTheme,
             themeMode: settingsController.themeMode,
 
             initialRoute: Routes.home,
@@ -87,7 +123,7 @@ class MyApp extends StatelessWidget {
             },
           ),
         );
-      },
-    );
+      });
+    });
   }
 }

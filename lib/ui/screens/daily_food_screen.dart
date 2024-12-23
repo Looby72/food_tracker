@@ -3,16 +3,16 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/daily_food_controller.dart';
 import '../../data/food_item.dart';
+import 'base_screen.dart';
 
 class DailyFoodScreen extends StatelessWidget {
   const DailyFoodScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Daily Food'),
-      ),
+    return Screen(
+      title: 'Daily Food',
+      centerTitle: false,
       body: Consumer<DailyFoodController>(
         builder: (context, dailyFoodController, child) {
           List<FoodItem> foodItems = dailyFoodController.todaysFoodList;

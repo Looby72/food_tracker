@@ -4,6 +4,7 @@ import '../../data/routes.dart';
 import '../widgets/barcode_scanner_widget.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/stored_products_widget.dart';
+import 'base_screen.dart';
 
 class AddFoodScreen extends StatelessWidget {
   const AddFoodScreen({super.key});
@@ -13,45 +14,44 @@ class AddFoodScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Add Food'),
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Products'),
-              Tab(text: 'Recipes'),
-            ],
-          ),
+      child: Screen(
+        title: 'Essen aufzeichnen',
+        appBarBottom: const TabBar(
+          tabs: [
+            Tab(text: 'Produkte'),
+            Tab(text: 'Rezepte'),
+          ],
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
-                  child: ProductSearch(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Card(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.createProduct);
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text('Create new Product'),
-                          ),
+                const ProductSearch(),
+                const SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Card(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.createProduct);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text('Manuell hinzufügen',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiary)),
                         ),
                       ),
-                      const BarcodeScannerWidget(),
-                    ],
-                  ),
+                    ),
+                    const BarcodeScannerWidget(),
+                  ],
                 ),
+                const SizedBox(height: 16.0),
                 const Expanded(
                   child: StoredProductsWidget(),
                 ),
@@ -63,9 +63,11 @@ class AddFoodScreen extends StatelessWidget {
                   onTap: () {
                     // Handle create new recipe action
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text('Coming Soon'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('Coming Soon',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface)),
                   ),
                 ),
               ),

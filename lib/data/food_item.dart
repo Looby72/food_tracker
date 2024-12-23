@@ -1,4 +1,4 @@
-import 'package:food_tracker/data/internal_product.dart';
+import 'internal_product.dart';
 import 'package:uuid/uuid.dart';
 
 /// A class to represent a Food item which can be added to the daily eaten food

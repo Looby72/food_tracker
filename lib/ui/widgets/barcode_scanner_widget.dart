@@ -40,10 +40,14 @@ class _BarcodeScannerState extends State<BarcodeScannerWidget> {
     return Column(
       children: [
         Card(
+          color: Theme.of(context).colorScheme.tertiary,
           child: InkWell(
             onTap: _scan,
-            child: const Padding(
-                padding: EdgeInsets.all(16.0), child: Text('Scan a Barcode')),
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('Barcode scannen',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onTertiary))),
           ),
         ),
         if (scanResult != null && scanResult != '') Text(scanResult)
