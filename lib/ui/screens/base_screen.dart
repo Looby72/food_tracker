@@ -8,13 +8,15 @@ class Screen extends StatelessWidget {
       this.centerTitle = true,
       this.actions,
       this.body,
-      this.floatingActionButton});
+      this.floatingActionButton,
+      this.appBarBottom});
 
   final String title;
   final bool centerTitle;
   final List<Widget>? actions;
   final Widget? body;
   final Widget? floatingActionButton;
+  final PreferredSizeWidget? appBarBottom;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class Screen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         actions: actions,
+        bottom: appBarBottom,
       ),
       body: Padding(padding: const EdgeInsets.all(16.0), child: body),
       floatingActionButton: floatingActionButton,

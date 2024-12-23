@@ -4,6 +4,7 @@ import '../../data/routes.dart';
 import '../widgets/daily_progress_widget.dart';
 import 'base_screen.dart';
 
+/// Displays the home screen with an overview of the user's daily food intake.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -29,8 +30,8 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(context, Routes.addFood);
         },
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
         child: const Icon(Icons.add),
       ),
     );

@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       ColorScheme lightColorScheme;
       ColorScheme darkColorScheme;
 
+      // Temporarily disable dynamic Themes bc of bugs in the library
       if (lightDynamic != null && darkDynamic != null && false) {
         lightColorScheme = lightDynamic;
         darkColorScheme = darkDynamic;
