@@ -21,6 +21,17 @@ import 'ui/screens/add_food_screen.dart';
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // Workaround for the dynamic color scheme library
+  // (https://github.com/material-foundation/flutter-packages/issues/582#issuecomment-2081174158)
+  (ColorScheme light, ColorScheme dark) _generateDynamicColourSchemes(
+      ColorScheme lightDynamic, ColorScheme darkDynamic) {
+    var lightBase = ColorScheme.fromSeed(seedColor: lightDynamic.primary);
+    var darkBase = ColorScheme.fromSeed(
+        seedColor: darkDynamic.primary, brightness: Brightness.dark);
+
+    return (lightBase.harmonized(), darkBase.harmonized());
+  }
+
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
@@ -30,9 +41,9 @@ class MyApp extends StatelessWidget {
       ColorScheme darkColorScheme;
 
       // Temporarily disable dynamic Themes bc of bugs in the library
-      if (lightDynamic != null && darkDynamic != null && false) {
-        lightColorScheme = lightDynamic;
-        darkColorScheme = darkDynamic;
+      if (lightDynamic != null && darkDynamic != null) {
+        (lightColorScheme, darkColorScheme) =
+            _generateDynamicColourSchemes(lightDynamic, darkDynamic);
       } else {
         lightColorScheme = DefaultTheme.lightScheme();
         darkColorScheme = DefaultTheme.darkScheme();

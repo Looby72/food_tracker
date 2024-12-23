@@ -58,11 +58,14 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   product.imageUrl != null
-                      ? Image.network(
-                          product.imageUrl!,
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            product.imageUrl!,
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                         )
                       : const SizedBox.shrink(),
                   const SizedBox(height: 16),
