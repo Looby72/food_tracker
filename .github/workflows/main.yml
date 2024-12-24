@@ -87,7 +87,7 @@ jobs:
       - name: Check if Tag Exists
         id: check_tag
         run: |
-          if git git show-ref --tags "v${{ env.VERSION }}" --quiet; then
+          if git show-ref --tags "v${{ env.VERSION }}" --quiet; then
             echo "Tag v${{ env.VERSION }} already exists"
             echo "TAG_EXISTS=true" >> $GITHUB_ENV
           else
