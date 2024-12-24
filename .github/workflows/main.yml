@@ -88,14 +88,16 @@ jobs:
         id: check_tag
         run: |
           if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-            echo "::set-output name=TAG_EXISTS::true"
+            echo "Tag v${{ env.VERSION }} already exists"
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=TAG_EXISTS::false"
+            echo "Tag v${{ env.VERSION }} does not exist yet"
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
           fi
 
       #12 Modify Tag if it Exists
       - name: Modify Tag
-        if: steps.check_tag.outputs.TAG_EXISTS == 'true'
+        if: env.TAG_EXISTS == 'true'
         id: modify_tag
         run: |
           new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
