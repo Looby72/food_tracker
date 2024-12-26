@@ -5,6 +5,7 @@ import 'package:openfoodfacts/openfoodfacts.dart';
 import '../../data/internal_product.dart';
 import '../../data/product_query.dart';
 import '../../data/routes.dart';
+import 'barcode_scanner_widget.dart';
 
 const Duration debounceDuration = Duration(milliseconds: 500);
 
@@ -48,6 +49,16 @@ class _ProductSearchState extends State<ProductSearch> {
     return SearchAnchor.bar(
         barHintText: 'Produktsuche',
         isFullScreen: true,
+        barLeading:
+            Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
+        barTrailing: <Widget>[
+          const BarcodeScannerWidget(),
+          IconButton(
+              onPressed: () =>
+                  Navigator.pushNamed(context, Routes.createProduct),
+              icon: Icon(Icons.add_box_outlined,
+                  color: Theme.of(context).colorScheme.primary)),
+        ],
         suggestionsBuilder:
             (BuildContext context, SearchController controller) async {
           final List<Product> options =

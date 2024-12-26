@@ -1,6 +1,7 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import '../../data/internal_product.dart';
 import '../../data/product_query.dart';
@@ -35,23 +36,12 @@ class _BarcodeScannerState extends State<BarcodeScannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final scanResult = this.scanResult;
+    //final scanResult = this.scanResult;
 
-    return Column(
-      children: [
-        Card(
-          color: Theme.of(context).colorScheme.tertiary,
-          child: InkWell(
-            onTap: _scan,
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text('Barcode scannen',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.onTertiary))),
-          ),
-        ),
-        if (scanResult != null && scanResult != '') Text(scanResult)
-      ],
+    return IconButton(
+      icon: const Icon(Symbols.barcode_scanner),
+      color: Theme.of(context).colorScheme.primary,
+      onPressed: _scan,
     );
   }
 

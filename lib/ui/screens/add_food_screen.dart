@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../data/routes.dart';
-import '../widgets/barcode_scanner_widget.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/stored_products_widget.dart';
 import 'base_screen.dart';
@@ -48,7 +47,6 @@ class AddFoodScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const BarcodeScannerWidget(),
                   ],
                 ),
                 const SizedBox(height: 16.0),
