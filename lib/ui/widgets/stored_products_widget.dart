@@ -52,6 +52,7 @@ class StoredProductsWidget extends StatelessWidget {
                                       Theme.of(context).colorScheme.onSurface),
                         ),
                         subtitle: Text(product.brand ?? '',
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium

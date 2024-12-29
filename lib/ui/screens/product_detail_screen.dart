@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../controllers/daily_food_controller.dart';
 import '../../controllers/product_storage_controller.dart';
 import '../../data/internal_product.dart';
+import '../widgets/product_image_widget.dart';
 import 'base_screen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -57,17 +58,12 @@ class ProductDetailScreen extends StatelessWidget {
                             Theme.of(context).colorScheme.onPrimaryContainer),
                   ),
                   const SizedBox(height: 16),
-                  product.imageUrl != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            product.imageUrl!,
-                            width: 200,
-                            height: 200,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : const SizedBox.shrink(),
+                  ProductImg(
+                    imageUrl: product.imageUrl,
+                    width: 200,
+                    height: 200,
+                    borderRadius: 8,
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     'Nährwerte pro 100g',

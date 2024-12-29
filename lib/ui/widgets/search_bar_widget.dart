@@ -6,6 +6,7 @@ import '../../data/internal_product.dart';
 import '../../data/product_query.dart';
 import '../../data/routes.dart';
 import 'barcode_scanner_widget.dart';
+import 'product_image_widget.dart';
 
 const Duration debounceDuration = Duration(milliseconds: 500);
 
@@ -52,12 +53,19 @@ class _ProductSearchState extends State<ProductSearch> {
         barLeading:
             Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
         barTrailing: <Widget>[
-          const BarcodeScannerWidget(),
-          IconButton(
+          Transform.translate(
+            offset: const Offset(15, 0),
+            child: const BarcodeScannerWidget(),
+          ),
+          Transform.translate(
+            offset: const Offset(10, 0),
+            child: IconButton(
               onPressed: () =>
                   Navigator.pushNamed(context, Routes.createProduct),
               icon: Icon(Icons.add_box_outlined,
-                  color: Theme.of(context).colorScheme.primary)),
+                  color: Theme.of(context).colorScheme.primary),
+            ),
+          ),
         ],
         suggestionsBuilder:
             (BuildContext context, SearchController controller) async {
@@ -69,21 +77,30 @@ class _ProductSearchState extends State<ProductSearch> {
           }
 
           _lastOptions = options.map((Product product) {
-            return ListTile(
-              title: Text(product.productName ?? 'No name'),
-              subtitle: Text(product.brands ?? 'No brand'),
-              leading: product.imageFrontUrl != null
-                  ? Image.network(product.imageFrontUrl!)
-                  : null,
-              onTap: () {
-                final InternalProduct internalProduct =
-                    InternalProduct.fromProduct(product: product);
-                Navigator.pushNamed(
-                  context,
-                  Routes.productDetail,
-                  arguments: internalProduct,
-                );
-              },
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: ListTile(
+                title: Text(product.productName ?? 'Unbekanntes Produkt',
+                    overflow: TextOverflow.ellipsis),
+                subtitle: Text(
+                  product.brands ?? '',
+                  overflow: TextOverflow.ellipsis,
+                ),
+                leading: ProductImg(
+                    imageUrl: product.imageFrontUrl, width: 50, height: 50),
+                onTap: () {
+                  final InternalProduct internalProduct =
+                      InternalProduct.fromProduct(product: product);
+                  Navigator.pushNamed(
+                    context,
+                    Routes.productDetail,
+                    arguments: internalProduct,
+                  );
+                },
+              ),
             );
           });
 
