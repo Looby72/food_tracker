@@ -8,7 +8,8 @@ import '../../data/routes.dart';
 import 'barcode_scanner_widget.dart';
 import 'product_image_widget.dart';
 
-const Duration debounceDuration = Duration(milliseconds: 500);
+// debounceDuration is the time to wait after the last input before making the API call
+const Duration debounceDuration = Duration(milliseconds: 300);
 
 class ProductSearch extends StatefulWidget {
   const ProductSearch({super.key});
@@ -18,31 +19,12 @@ class ProductSearch extends StatefulWidget {
 }
 
 class _ProductSearchState extends State<ProductSearch> {
-  //string of current query if null there is no pending query
-  String? _currentQuery;
-  //most recent API Suggestions
-  late Iterable<Widget> _lastOptions = <Widget>[];
   late final _Debounceable<Iterable<Product>?, String> _debouncedSearch;
-
-  Future<Iterable<Product>?> _search(String query) async {
-    _currentQuery = query;
-
-    //make API call
-    Iterable<Product> options = await queryByName(query);
-
-    // if the query has changed by the time the API call has been resolved, discard the result
-    if (_currentQuery != query) {
-      return null;
-    }
-    _currentQuery = null;
-
-    return options;
-  }
 
   @override
   void initState() {
     super.initState();
-    _debouncedSearch = _debounce<Iterable<Product>?, String>(_search);
+    _debouncedSearch = _debounce<Iterable<Product>?, String>(queryByName);
   }
 
   @override
@@ -69,43 +51,57 @@ class _ProductSearchState extends State<ProductSearch> {
         ],
         suggestionsBuilder:
             (BuildContext context, SearchController controller) async {
-          final List<Product> options =
-              (await _debouncedSearch(controller.text))?.toList() ??
-                  <Product>[];
-          if (options.isEmpty) {
-            return _lastOptions;
+          if (controller.text.isNotEmpty) {
+            final suggestions = await _getSuggestions(controller);
+            if (suggestions.isEmpty) {
+              return <Widget>[
+                const ListTile(
+                  title: Text('Keine Ergebnisse gefunden'),
+                  leading: Icon(Icons.search_off),
+                )
+              ];
+            } else {
+              return suggestions;
+            }
+          } else {
+            return const <Widget>[];
           }
-
-          _lastOptions = options.map((Product product) {
-            return Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: ListTile(
-                title: Text(product.productName ?? 'Unbekanntes Produkt',
-                    overflow: TextOverflow.ellipsis),
-                subtitle: Text(
-                  product.brands ?? '',
-                  overflow: TextOverflow.ellipsis,
-                ),
-                leading: ProductImg(
-                    imageUrl: product.imageFrontUrl, width: 50, height: 50),
-                onTap: () {
-                  final InternalProduct internalProduct =
-                      InternalProduct.fromProduct(product: product);
-                  Navigator.pushNamed(
-                    context,
-                    Routes.productDetail,
-                    arguments: internalProduct,
-                  );
-                },
-              ),
-            );
-          });
-
-          return _lastOptions;
         });
+  }
+
+  /// Fetches products from the OpenFoodFacts API by name.
+  /// Returns a list of Widgets that represent the products.
+  Future<Iterable<Widget>> _getSuggestions(SearchController controller) async {
+    final suggestions =
+        (await _debouncedSearch(controller.text))?.toList() ?? <Product>[];
+
+    return suggestions.map((Product product) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        child: ListTile(
+          title: Text(product.productName ?? 'Unbekanntes Produkt',
+              overflow: TextOverflow.ellipsis),
+          subtitle: Text(
+            product.brands ?? '',
+            overflow: TextOverflow.ellipsis,
+          ),
+          leading: ProductImg(
+              imageUrl: product.imageFrontUrl, width: 50, height: 50),
+          onTap: () {
+            final InternalProduct internalProduct =
+                InternalProduct.fromProduct(product: product);
+            Navigator.pushNamed(
+              context,
+              Routes.productDetail,
+              arguments: internalProduct,
+            );
+          },
+        ),
+      );
+    });
   }
 }
 

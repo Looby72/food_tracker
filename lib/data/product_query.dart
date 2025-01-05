@@ -11,8 +11,8 @@ List<ProductField>? _fields = <ProductField>[
   ProductField.IMAGE_FRONT_URL,
   ProductField.SERVING_SIZE
 ];
-OpenFoodFactsLanguage? _language = OpenFoodFactsLanguage.GERMAN;
-OpenFoodFactsCountry? _country = OpenFoodFactsCountry.GERMANY;
+OpenFoodFactsLanguage _language = OpenFoodFactsLanguage.GERMAN;
+OpenFoodFactsCountry _country = OpenFoodFactsCountry.GERMANY;
 
 /// query a product from OpenFoodFacts API by product name
 Future<Iterable<Product>> queryByName(String name) async {
