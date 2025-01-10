@@ -29,41 +29,21 @@ class _ProductSearchState extends State<ProductSearch> {
 
   @override
   Widget build(BuildContext context) {
-    return SearchAnchor.bar(
-        barHintText: 'Produktsuche',
+    return SearchAnchor(
+        viewHintText: 'Produktsuche',
         isFullScreen: true,
-        barLeading:
-            Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
-        barTrailing: <Widget>[
-          Transform.translate(
-            offset: const Offset(15, 0),
-            child: const BarcodeScannerWidget(),
-          ),
-          Transform.translate(
-            offset: const Offset(10, 0),
-            child: IconButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, Routes.createProduct),
-              icon: Icon(Icons.add_box_outlined,
-                  color: Theme.of(context).colorScheme.primary),
-            ),
-          ),
-        ],
+        builder: (BuildContext context, SearchController controller) {
+          return _buildSearchBar(context, controller);
+        },
+        viewBuilder: (Iterable<Widget> suggestions) {
+          return _buildView(suggestions);
+        },
         suggestionsBuilder:
-            (BuildContext context, SearchController controller) async {
+            (BuildContext context, SearchController controller) {
           if (controller.text.isNotEmpty) {
-            final suggestions = await _getSuggestions(controller);
-            if (suggestions.isEmpty) {
-              return <Widget>[
-                const ListTile(
-                  title: Text('Keine Ergebnisse gefunden'),
-                  leading: Icon(Icons.search_off),
-                )
-              ];
-            } else {
-              return suggestions;
-            }
+            return _getSuggestions(controller);
           } else {
+            // we could return a list of recent searches here
             return const <Widget>[];
           }
         });
@@ -78,8 +58,8 @@ class _ProductSearchState extends State<ProductSearch> {
     return suggestions.map((Product product) {
       return Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHigh,
-          borderRadius: BorderRadius.circular(5.0),
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12.0),
         ),
         child: ListTile(
           title: Text(product.productName ?? 'Unbekanntes Produkt',
@@ -102,6 +82,49 @@ class _ProductSearchState extends State<ProductSearch> {
         ),
       );
     });
+  }
+
+  /// Builds the search bar with the search icon, barcode scanner and add product button.
+  Widget _buildSearchBar(BuildContext context, SearchController controller) {
+    return SearchBar(
+      controller: controller,
+      hintText: '   Produktsuche',
+      leading: Transform.translate(
+        offset: const Offset(10, 0),
+        child: Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
+      ),
+      trailing: <Widget>[
+        Transform.translate(
+          offset: const Offset(10, 0),
+          child: const BarcodeScannerWidget(),
+        ),
+        Transform.translate(
+          offset: const Offset(5, 0),
+          child: IconButton(
+            onPressed: () => Navigator.pushNamed(context, Routes.createProduct),
+            icon: Icon(Icons.add_box_outlined,
+                color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
+      ],
+      onTap: () {
+        controller.openView();
+      },
+    );
+  }
+
+  /// Builds the view of the suggestions.
+  Widget _buildView(Iterable<Widget> suggestions) {
+    return Container(
+      color: Theme.of(context).colorScheme.surfaceContainer,
+      padding: const EdgeInsets.all(16.0),
+      child: ListView.separated(
+        padding: const EdgeInsets.only(top: 0),
+        itemCount: suggestions.length,
+        itemBuilder: (context, index) => suggestions.elementAt(index),
+        separatorBuilder: (context, index) => const SizedBox(height: 4.0),
+      ),
+    );
   }
 }
 
