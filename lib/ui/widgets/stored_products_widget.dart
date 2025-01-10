@@ -26,7 +26,7 @@ class StoredProductsWidget extends StatelessWidget {
                 return ListView.separated(
                   itemCount: products.length,
                   itemBuilder: (context, index) {
-                    final product = products[index];
+                    final product = products[products.length - 1 - index];
                     return Container(
                       decoration: BoxDecoration(
                         color:
