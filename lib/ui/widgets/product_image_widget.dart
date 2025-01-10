@@ -23,6 +23,15 @@ class ProductImg extends StatelessWidget {
         width: width,
         height: height,
         fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Image.asset(
+            'assets/images/app_logo_foreground.png',
+            width: width,
+            height: height,
+            fit: BoxFit.cover,
+          );
+        },
         errorBuilder: (context, error, stackTrace) {
           return Image.asset(
             'assets/images/app_logo_foreground.png',
