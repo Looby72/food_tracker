@@ -5,8 +5,11 @@ import 'package:openfoodfacts/openfoodfacts.dart';
 import '../../data/internal_product.dart';
 import '../../data/product_query.dart';
 import '../../data/routes.dart';
+import 'barcode_scanner_widget.dart';
+import 'product_image_widget.dart';
 
-const Duration debounceDuration = Duration(milliseconds: 500);
+// debounceDuration is the time to wait after the last input before making the API call
+const Duration debounceDuration = Duration(milliseconds: 300);
 
 class ProductSearch extends StatefulWidget {
   const ProductSearch({super.key});
@@ -16,68 +19,112 @@ class ProductSearch extends StatefulWidget {
 }
 
 class _ProductSearchState extends State<ProductSearch> {
-  //string of current query if null there is no pending query
-  String? _currentQuery;
-  //most recent API Suggestions
-  late Iterable<Widget> _lastOptions = <Widget>[];
   late final _Debounceable<Iterable<Product>?, String> _debouncedSearch;
-
-  Future<Iterable<Product>?> _search(String query) async {
-    _currentQuery = query;
-
-    //make API call
-    Iterable<Product> options = await queryByName(query);
-
-    // if the query has changed by the time the API call has been resolved, discard the result
-    if (_currentQuery != query) {
-      return null;
-    }
-    _currentQuery = null;
-
-    return options;
-  }
 
   @override
   void initState() {
     super.initState();
-    _debouncedSearch = _debounce<Iterable<Product>?, String>(_search);
+    _debouncedSearch = _debounce<Iterable<Product>?, String>(queryByName);
   }
 
   @override
   Widget build(BuildContext context) {
-    return SearchAnchor.bar(
-        barHintText: 'Produktsuche',
+    return SearchAnchor(
+        viewHintText: 'Produktsuche',
         isFullScreen: true,
+        builder: (BuildContext context, SearchController controller) {
+          return _buildSearchBar(context, controller);
+        },
+        viewBuilder: (Iterable<Widget> suggestions) {
+          return _buildView(suggestions);
+        },
         suggestionsBuilder:
-            (BuildContext context, SearchController controller) async {
-          final List<Product> options =
-              (await _debouncedSearch(controller.text))?.toList() ??
-                  <Product>[];
-          if (options.isEmpty) {
-            return _lastOptions;
+            (BuildContext context, SearchController controller) {
+          if (controller.text.isNotEmpty) {
+            return _getSuggestions(controller);
+          } else {
+            // we could return a list of recent searches here
+            return const <Widget>[];
           }
-
-          _lastOptions = options.map((Product product) {
-            return ListTile(
-              title: Text(product.productName ?? 'No name'),
-              subtitle: Text(product.brands ?? 'No brand'),
-              leading: product.imageFrontUrl != null
-                  ? Image.network(product.imageFrontUrl!)
-                  : null,
-              onTap: () {
-                final InternalProduct internalProduct =
-                    InternalProduct.fromProduct(product: product);
-                Navigator.pushNamed(
-                  context,
-                  Routes.productDetail,
-                  arguments: internalProduct,
-                );
-              },
-            );
-          });
-
-          return _lastOptions;
         });
+  }
+
+  /// Fetches products from the OpenFoodFacts API by name.
+  /// Returns a list of Widgets that represent the products.
+  Future<Iterable<Widget>> _getSuggestions(SearchController controller) async {
+    final suggestions =
+        (await _debouncedSearch(controller.text))?.toList() ?? <Product>[];
+
+    return suggestions.map((Product product) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: ListTile(
+          title: Text(product.productName ?? 'Unbekanntes Produkt',
+              overflow: TextOverflow.ellipsis),
+          subtitle: Text(
+            product.brands ?? '',
+            overflow: TextOverflow.ellipsis,
+          ),
+          leading: ProductImg(
+              imageUrl: product.imageFrontUrl, width: 50, height: 50),
+          onTap: () {
+            final InternalProduct internalProduct =
+                InternalProduct.fromProduct(product: product);
+            Navigator.pushNamed(
+              context,
+              Routes.productDetail,
+              arguments: internalProduct,
+            );
+          },
+        ),
+      );
+    });
+  }
+
+  /// Builds the search bar with the search icon, barcode scanner and add product button.
+  Widget _buildSearchBar(BuildContext context, SearchController controller) {
+    return SearchBar(
+      controller: controller,
+      hintText: '   Produktsuche',
+      leading: Transform.translate(
+        offset: const Offset(10, 0),
+        child: Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
+      ),
+      trailing: <Widget>[
+        Transform.translate(
+          offset: const Offset(10, 0),
+          child: const BarcodeScannerWidget(),
+        ),
+        Transform.translate(
+          offset: const Offset(5, 0),
+          child: IconButton(
+            onPressed: () => Navigator.pushNamed(context, Routes.createProduct),
+            icon: Icon(Icons.add_box_outlined,
+                color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
+      ],
+      onTap: () {
+        controller.openView();
+      },
+    );
+  }
+
+  /// Builds the view of the suggestions.
+  Widget _buildView(Iterable<Widget> suggestions) {
+    return Container(
+      color: Theme.of(context).colorScheme.surfaceContainer,
+      padding: const EdgeInsets.all(16.0),
+      child: ListView.separated(
+        padding: const EdgeInsets.only(top: 0),
+        itemCount: suggestions.length,
+        itemBuilder: (context, index) => suggestions.elementAt(index),
+        separatorBuilder: (context, index) => const SizedBox(height: 4.0),
+      ),
+    );
   }
 }
 

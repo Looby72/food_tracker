@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../data/routes.dart';
-import '../widgets/barcode_scanner_widget.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/stored_products_widget.dart';
 import 'base_screen.dart';
@@ -24,35 +22,11 @@ class AddFoodScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Column(
+            const Column(
               children: [
-                const ProductSearch(),
-                const SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Card(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, Routes.createProduct);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text('Manuell hinzufügen',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onTertiary)),
-                        ),
-                      ),
-                    ),
-                    const BarcodeScannerWidget(),
-                  ],
-                ),
-                const SizedBox(height: 16.0),
-                const Expanded(
+                ProductSearch(),
+                SizedBox(height: 16.0),
+                Expanded(
                   child: StoredProductsWidget(),
                 ),
               ],

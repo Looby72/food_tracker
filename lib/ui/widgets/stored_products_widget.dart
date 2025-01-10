@@ -31,14 +31,7 @@ class StoredProductsWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         color:
                             Theme.of(context).colorScheme.surfaceContainerHigh,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(index == 0 ? 12.0 : 5.0),
-                          topRight: Radius.circular(index == 0 ? 12.0 : 5.0),
-                          bottomLeft: Radius.circular(
-                              index == products.length - 1 ? 12.0 : 5.0),
-                          bottomRight: Radius.circular(
-                              index == products.length - 1 ? 12.0 : 5.0),
-                        ),
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
                         title: Text(
@@ -52,6 +45,7 @@ class StoredProductsWidget extends StatelessWidget {
                                       Theme.of(context).colorScheme.onSurface),
                         ),
                         subtitle: Text(product.brand ?? '',
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -68,7 +62,7 @@ class StoredProductsWidget extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 2.0),
+                      const SizedBox(height: 4.0),
                 );
               }
             },
