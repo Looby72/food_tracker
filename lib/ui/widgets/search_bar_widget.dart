@@ -27,26 +27,78 @@ class _ProductSearchState extends State<ProductSearch> {
     _debouncedSearch = _debounce<Iterable<Product>?, String>(queryByName);
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return SearchAnchor(
+  //       viewHintText: 'Produktsuche',
+  //       isFullScreen: true,
+  //       builder: (BuildContext context, SearchController controller) {
+  //         return _buildSearchBar(context, controller);
+  //       },
+  //       viewBuilder: (Iterable<Widget> suggestions) {
+  //         return _buildView(suggestions);
+  //       },
+  //       suggestionsBuilder:
+  //           (BuildContext context, SearchController controller) {
+  //         if (controller.text.isNotEmpty) {
+  //           return _getSuggestions(controller);
+  //         } else {
+  //           // we could return a list of recent searches here
+  //           return const <Widget>[];
+  //         }
+  //       });
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return SearchAnchor(
-        viewHintText: 'Produktsuche',
-        isFullScreen: true,
-        builder: (BuildContext context, SearchController controller) {
-          return _buildSearchBar(context, controller);
-        },
-        viewBuilder: (Iterable<Widget> suggestions) {
-          return _buildView(suggestions);
-        },
-        suggestionsBuilder:
-            (BuildContext context, SearchController controller) {
-          if (controller.text.isNotEmpty) {
-            return _getSuggestions(controller);
-          } else {
-            // we could return a list of recent searches here
-            return const <Widget>[];
-          }
-        });
+    return SizedBox(
+        height: 56.0,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(32.0),
+          /*onTap: () {
+          Navigator.pushNamed(context, Routes.search);
+        },*/
+          child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                borderRadius: BorderRadius.circular(32.0),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Icon(Icons.search,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Text('Produktsuche',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
+                                fontSize: 16.0)),
+                      ),
+                    ],
+                  )),
+                  Row(
+                    children: [
+                      const BarcodeScannerWidget(),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.createProduct);
+                        },
+                        icon: Icon(Icons.add_box_outlined,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                    ],
+                  )
+                ],
+              )),
+        ));
   }
 
   /// Fetches products from the OpenFoodFacts API by name.
