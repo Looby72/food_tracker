@@ -36,13 +36,19 @@ class _BarcodeScannerState extends State<BarcodeScannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //final scanResult = this.scanResult;
-
-    return IconButton(
-      icon: const Icon(Symbols.barcode_scanner),
-      color: Theme.of(context).colorScheme.primary,
-      onPressed: _scan,
-    );
+    return Material(
+        color: Colors.transparent,
+        child: InkWell(
+            borderRadius: BorderRadius.circular(24.0),
+            onTap: _scan,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24.0),
+              ),
+              child: Icon(Symbols.barcode_scanner,
+                  color: Theme.of(context).colorScheme.primary),
+            )));
   }
 
   Future<void> _scan() async {

@@ -13,6 +13,7 @@ import 'data/routes.dart';
 import 'theme.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/product_detail_screen.dart';
+import 'ui/screens/search_suggestions_screen.dart';
 import 'ui/screens/settings_screen.dart';
 import 'ui/screens/daily_food_screen.dart';
 import 'ui/screens/create_prodcut_screen.dart';
@@ -120,6 +121,7 @@ class MyApp extends StatelessWidget {
               Routes.dailyFood: (context) => const DailyFoodScreen(),
               Routes.addFood: (context) => const AddFoodScreen(),
               Routes.createProduct: (context) => const CreateProductScreen(),
+              Routes.search: (context) => const SearchSuggestionsScreen(),
             },
           ),
         );
