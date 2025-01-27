@@ -10,7 +10,7 @@ class SearchSuggestionsScreen extends StatefulWidget {
 
 class _SearchSuggestionsScreenState extends State<SearchSuggestionsScreen> {
   final TextEditingController _searchController = TextEditingController();
-  List<String> _allSuggestions = ["apple", "banana", "orange", "grapes"];
+  final List<String> _allSuggestions = ['apple', 'banana', 'orange', 'grapes'];
   List<String> _filteredSuggestions = [];
 
   @override
@@ -23,47 +23,53 @@ class _SearchSuggestionsScreenState extends State<SearchSuggestionsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: const InputDecoration(
-                        labelText: 'Welches Produkt hast du gegessen?'),
-                    onChanged: (value) {
-                      setState(() {
-                        _filteredSuggestions = _allSuggestions
-                            .where((item) => item
-                                .toLowerCase()
-                                .contains(value.toLowerCase()))
-                            .toList();
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _filteredSuggestions.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_filteredSuggestions[index]),
-                  );
+          child: Column(
+        children: [
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
                 },
               ),
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isCollapsed: true,
+                    hintText: 'Welches Produkt hast du gegessen?',
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: _searchController.clear,
+                    ),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _filteredSuggestions = _allSuggestions
+                          .where((item) =>
+                              item.toLowerCase().contains(value.toLowerCase()))
+                          .toList();
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+          const Divider(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredSuggestions.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_filteredSuggestions[index]),
+                );
+              },
             ),
-          ],
-        ),
-      ),
+          ),
+        ],
+      )),
     );
   }
 }
